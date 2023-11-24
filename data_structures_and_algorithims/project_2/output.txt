@@ -1,0 +1,2 @@
+equation NO.1: (2000)+(15000)/(15*3), validity: valid,  prefix: ( + 2000 / 15000 * 15 3 ), result: 2333.3.
+equation NO.2: [123+1231, validity: invalid, no prefix since invalid, no result since invalid. 
