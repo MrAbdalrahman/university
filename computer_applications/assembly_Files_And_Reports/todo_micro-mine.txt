@@ -1,0 +1,71 @@
+ PRESERVE8
+ THUMB 
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ ALIGN
+	 
+	 	 AREA RESET,DATA,READWRITE
+String1 DCB "abcd",0
+String2 DCB 20
+ALIGN
+	
+ AREA MYCODE, CODE, READONLY
+ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+;;;;;;;;;;User Code Start from the next line;;;;;;;;;;;;
+;/ here we have:
+;//R0 holds the original string 
+;//R2 holds the current index's charachter
+;//R3 holds the size
+;//R4 holds the EOS symbole 
+;// EOS: end of string
+
+;// this is the loop of counting the number of charachters in string1
+ MOV R4 ,#0 
+ LDR R0 ,=String1
+ MOV R2 , #0
+ MOV R3 , #0		
+loop
+ LDRB R2,[R0]
+ CMP R2,R4
+ BEQ exitLoop
+ ADD R3,R3,#1
+ ADD R0,R0,#1
+ B loop
+exitLoop
+ SUB R0,R0,#1
+;// finished counting the number of charachters 
+;// the rusult is saved in R3
+
+;// this part is to itirate the string from the end R3 times
+;// R2 is used here again to hold the current index charachter
+;// the reuslt will be saved in R8
+ LDR R8,=String2
+loop2
+ MOV R2,R0
+ STRB R8,[R2]
+ ADD R8,#1
+ SUBS R3,#1
+ BEQ exitLoop2
+ SUB R0,#1
+ B loop2
+
+exitLoop2
+ SUB R8,#4
+;// we can also use stack but i dont know how to use stack with assembly
+
+;// now to make sure that everything work properly: 
+;//we will iterate throught string2 and check each char
+loop3
+ LDRB R2 ,[R8],#1
+ CMP R2,R4
+ BEQ STOP
+ B loop3
+ 
+STOP
+ B STOP
+ END

@@ -1,0 +1,48 @@
+ PRESERVE8
+ THUMB 
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ ALIGN
+size DCD 6
+ AREA RESET,DATA,READWRITE
+array DCD 3,5,4,12,7,9
+
+ AREA MYCODE, CODE, READONLY
+ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+;;;;;;;;;;User Code Start from the next line;;;;;;;;;;;;
+ LDR R0, =array 
+ LDR R1, =size  
+ LDR R1, [R1]   
+
+loop1
+ MOV R2, #0
+ MOV R3, R1
+ 
+loop2
+ LDR R4, [R0]   
+ LDR R5, [R0, #4] 
+ CMP R4, R5
+ BLE noSwap
+
+ ; Swap elements
+ STR R5, [R0]   
+ STR R4, [R0, #4] 
+ MOV R2, #1
+ 
+noSwap 
+ ADD R0, R0, #4 
+ SUBS R3, R3, #1
+ BNE loop2
+ 
+ SUBS R1, R1, #1
+ TST R2, #1  
+ BNE loop1
+
+STOP
+ B STOP
+ END
