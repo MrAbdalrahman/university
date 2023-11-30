@@ -3,16 +3,16 @@
 #include <time.h>
 #define MATRIX_SIZE 1000 // the matrix size could be modified
 
-int matrix1[size][size]; // matrix1 of content1
-int matrix2[size][size]; // matrix2 of content2
+int matrix1[MATRIX_SIZE][MATRIX_SIZE]; // matrix1 of content1
+int matrix2[MATRIX_SIZE][MATRIX_SIZE]; // matrix2 of content2
 
 // a function to print the matrix in a matrix format
-void printMatrix(int matrix[size][size])
+void printMatrix(int matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < MATRIX_SIZE; ++i)
     {
-        for (int j = 0; j < size; ++j)
-            printf((j == size - 1) ? "%d\n" : "%d ", matrix[i][j]);
+        for (int j = 0; j < MATRIX_SIZE; ++j)
+            printf((j == MATRIX_SIZE - 1) ? "%d\n" : "%d ", matrix[i][j]);
     }
     printf("\n\n");
 }
@@ -26,19 +26,19 @@ int main()
     int content1[7] = {1, 2, 1, 1, 7, 5, 3};           // id = 1211753
     int content2[10] = {2, 4, 2, 7, 1, 4, 1, 2, 5, 9}; // id * year of birth = 1211753 * 2003 = 2427141259
     int counter = 0;                                   // a counter to iterate circularry around the contents
-    int resultMatrix1[size][size] = {0}; // matrix of multiplication1
+    int resultMatrix1[MATRIX_SIZE][MATRIX_SIZE] = {0}; // matrix of multiplication1
     //------------------------
 
     // matrix1-------------------------------------------------
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++, counter = (counter == 6) ? 0 : ++counter)
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++, counter = (counter == 6) ? 0 : ++counter)
             matrix1[i][j] = content1[counter];
     counter = 0;
     // --------------------------------------------------------
 
     // matrix2 ------------------------------------------------
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++, counter = (counter == 9) ? 0 : ++counter)
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++, counter = (counter == 9) ? 0 : ++counter)
             matrix2[i][j] = content2[counter];
     counter = 0;
     // --------------------------------------------------------
@@ -54,12 +54,12 @@ int main()
     struct timeval start_time, end_time;
 
     gettimeofday(&start_time, NULL);
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < MATRIX_SIZE; ++i)
     {
-        for (int j = 0; j < size; ++j)
+        for (int j = 0; j < MATRIX_SIZE; ++j)
         {
             resultMatrix1[i][j] = 0;
-            for (int k = 0; k < size; ++k)
+            for (int k = 0; k < MATRIX_SIZE; ++k)
                 resultMatrix1[i][j] += matrix1[i][k] * matrix2[k][j];
         }
     }

@@ -6,20 +6,20 @@
 #include <unistd.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#define MATRIX_SIZE 1000 // the matrix size could be modified
+#define MATRIX_SIZE 100 // the matrix size could be modified
 
-int matrix1[size][size]; // matrix1 of content1
-int matrix2[size][size]; // matrix2 of content2
+int matrix1[MATRIX_SIZE][MATRIX_SIZE]; // matrix1 of content1
+int matrix2[MATRIX_SIZE][MATRIX_SIZE]; // matrix2 of content2
 
 // a function to multiply subMatrices
-void multiplyMatrices(int result[size][size], int matrix1[size][size], int matrix2[size][size], int startRow, int endRow)
+void multiplyMatrices(int result[MATRIX_SIZE][MATRIX_SIZE], int matrix1[MATRIX_SIZE][MATRIX_SIZE], int matrix2[MATRIX_SIZE][MATRIX_SIZE], int startRow, int endRow)
 {
     for (int i = startRow; i < endRow; ++i)
     {
-        for (int j = 0; j < size; ++j)
+        for (int j = 0; j < MATRIX_SIZE; ++j)
         {
             result[i][j] = 0;
-            for (int k = 0; k < size; ++k)
+            for (int k = 0; k < MATRIX_SIZE; ++k)
             {
                 result[i][j] += matrix1[i][k] * matrix2[k][j];
             }
@@ -28,12 +28,12 @@ void multiplyMatrices(int result[size][size], int matrix1[size][size], int matri
 }
 
 // a function to print the matrix in a matrix format
-void printMatrix(int matrix[size][size])
+void printMatrix(int matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < MATRIX_SIZE; ++i)
     {
-        for (int j = 0; j < size; ++j)
-            printf((j == size - 1) ? "%d\n" : "%d ", matrix[i][j]);
+        for (int j = 0; j < MATRIX_SIZE; ++j)
+            printf((j == MATRIX_SIZE - 1) ? "%d\n" : "%d ", matrix[i][j]);
     }
     printf("\n\n");
 }
@@ -50,15 +50,15 @@ int main()
     //------------------------
 
     // matrix1-------------------------------------------------
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++, counter = (counter == 6) ? 0 : ++counter)
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++, counter = (counter == 6) ? 0 : ++counter)
             matrix1[i][j] = content1[counter];
     counter = 0;
     // --------------------------------------------------------
 
     // matrix2 ------------------------------------------------
-    for (int i = 0; i < size; i++)
-        for (int j = 0; j < size; j++, counter = (counter == 9) ? 0 : ++counter)
+    for (int i = 0; i < MATRIX_SIZE; i++)
+        for (int j = 0; j < MATRIX_SIZE; j++, counter = (counter == 9) ? 0 : ++counter)
             matrix2[i][j] = content2[counter];
     counter = 0;
     // --------------------------------------------------------
@@ -82,12 +82,12 @@ int main()
         printf("failed to create shared memory\n");
         return 1;
     }
-    int(*sharedMatrix)[size] = shmat(mId, NULL, 0); // automatic address assigned NULL && 0
+    int(*sharedMatrix)[MATRIX_SIZE] = shmat(mId, NULL, 0); // automatic address assigned NULL && 0
 
-    int numOfProcesses = 10;
+    int numOfProcesses = 2;
 
     // number of rows each process should handle is calculated by the matrix size divided by the number of processes
-    int rowsPerProcess = size / numOfProcesses; // 100/10 = 10 (in this case)
+    int rowsPerProcess = MATRIX_SIZE / numOfProcesses; // 100/10 = 10 (in this case)
 
     // processes creation using fork()
     for (int i = 0; i < numOfProcesses; ++i) // create 2^10 child processes
@@ -104,7 +104,7 @@ int main()
         {
             // deciding the edges of each submatrix----
             int startRow = i * rowsPerProcess;
-            int endRow = (i == numOfProcesses - 1) ? size : startRow + rowsPerProcess;
+            int endRow = (i == numOfProcesses - 1) ? MATRIX_SIZE : startRow + rowsPerProcess;
             //-----------------------------------------
 
             // executing each submatrix

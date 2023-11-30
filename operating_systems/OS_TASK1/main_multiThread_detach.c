@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
-#define MATRIX_SIZE 1000 // the matrix size could be modified
-#define NUM_THREADS 20   // the number of threads can be modified
+#define MATRIX_SIZE 100 // the matrix size could be modified
+#define NUM_THREADS 4   // the number of threads can be modified
 
 int matrix1[MATRIX_SIZE][MATRIX_SIZE];             // matrix1 of content1
 int matrix2[MATRIX_SIZE][MATRIX_SIZE];             // matrix2 of content2
