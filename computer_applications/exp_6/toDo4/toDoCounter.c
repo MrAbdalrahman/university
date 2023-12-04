@@ -42,7 +42,7 @@ int main (){
 	while(1){ // run forever
 		
 		if (!(IO1PIN & (1<<16))){ // if the button is clicked then : 
-			msDelay(50); //delay
+			msDelay(100); //delay
 			
 			IO0CLR = (1<<22); // setting the output for the tens counter on 1 (on)
 			IO0CLR = 0x0000007F; // setting the 7 outputs of the 7-segment display on 1 (on)
