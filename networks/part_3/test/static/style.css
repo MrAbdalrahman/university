@@ -1,0 +1,62 @@
+body {
+  background: linear-gradient(to right, #6dd5ed, #2193b0);
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.header-image {
+  background: url("header-image.jpg") no-repeat center center/cover;
+  text-align: center;
+  padding: 50px 0;
+}
+
+.blue {
+  color: #1a75ff;
+}
+
+.info-box,
+.student {
+  background-color: #fff;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 20px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.info-box:hover,
+.student:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.students {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.student-img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+}
+
+a {
+  color: #1a75ff;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #ffcc29;
+}
