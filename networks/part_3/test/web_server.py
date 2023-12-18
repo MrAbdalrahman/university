@@ -15,45 +15,74 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.send_html_response("main_en.html")
         elif file_path == "ar":
             self.send_html_response("main_ar.html")
+        elif file_path.endswith(".html"):
+            self.send_html_file(file_path)
+        elif file_path.endswith(".css"):
+            self.send_css_file(file_path)
+        elif file_path.endswith(".png"):
+            self.send_image(file_path, "image/png")
+        elif file_path.endswith(".jpg"):
+            self.send_image(file_path, "image/jpeg")
         elif file_path in ["cr", "so", "rt"]:
             self.send_redirect(file_path)
         else:
-            # Treat any other request as a request for a static file
-            self.send_static_file(file_path)
+            self.send_error_response()
 
-    def send_static_file(self, file_path):
+    def send_static_file(self, file_path, content_type):
         # Construct the absolute path to the static file
         abs_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "static", file_path))
 
         # Check if the file exists
         if not os.path.exists(abs_file_path):
-            self.send_error(404, "File Not Found")
+            self.send_error_response()
             return
 
         # Serve static files directly
         self.send_response(200)
-        self.send_header("Content-type", self.guess_type(abs_file_path))
+        self.send_header("Content-type", content_type)
         self.end_headers()
 
         with open(abs_file_path, "rb") as file:
             self.copyfile(file, self.wfile)
 
     def send_html_response(self, filename):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
 
-        with open(os.path.join("static", filename), "rb") as file:
-            self.copyfile(file, self.wfile)
+        self.send_static_file(filename, "text/html")
+
+    def send_html_file(self, file_path):
+        self.send_static_file(file_path, "text/html")
+
+    def send_css_file(self, file_path):
+        self.send_static_file(file_path, "text/css")
+
+    def send_image(self, file_path, content_type):
+        self.send_static_file(file_path, content_type)
 
     def send_redirect(self, target):
-        locations = {"cr": "http://cornell.edu", "so": "http://stackoverflow.com", "rt": "http://ritajwebsite.com"}
+        locations = {"cr": "http://cornell.edu", "so": "http://stackoverflow.com", "rt": "http://ritaj.birzeit.edu"}
         if target in locations:
             self.send_response(307)
             self.send_header("Location", locations[target])
             self.end_headers()
         else:
-            self.send_error(404, "File Not Found")
+            self.send_error_response()
+
+    def send_error_response(self):
+        self.send_response(404)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
+        # Open and send the 'DNE.html' file
+        try:
+            with open(os.path.join("static", "DNE.html"), "rb") as file:
+                self.copyfile(file, self.wfile)
+        except FileNotFoundError:
+            # If 'DNE.html' is not found, send a simple error message
+            self.wfile.write(b"<html><body><h1>File Not Found</h1></body></html>")
+
+    def log_message(self, format, *args):
+        # Print the HTTP requests to the terminal window
+        print("%s - - [%s] %s\n" % (self.client_address[0], self.log_date_time_string(), format % args))
 
 if __name__ == "__main__":
     port = 9966
