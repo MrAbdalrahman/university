@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ENCS3320-My Tiny Webserver 23/24</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .info-box,
+        .student {
+            background-color: #fff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover,
+        .student:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .students {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .student-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+        }
+
+        a {
+            color: #1a75ff;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ffcc29;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to our course Computer Networks, <span style="color: blue;">This is a tiny webserver</span></h1>
+    
+    <div class="info-box">
+        <p>Content-Type in HTTP is used to indicate the media type of the resource. In responses, a Content-Type header tells the client what the content type of the returned content actually is.</p>
+    </div>
+
+    <div class="student-container">
+        <div class="student">
+            <img src="student1.png" alt = "student1 image" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 10px; right: 10px;">
+            <h2>Omar Daghlas</h2>
+            <p>ID: 1222500</p>
+            <p>Projects: Gaza- Humanitarian Information Managing System</p>
+            <p>Skills: Public Speeches</p>
+            <p>Hobbies: Swimming</p>
+        </div>
+
+        <div class="student">
+            <img src="student2.jpg" alt="student2 image" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 10px; right: 10px;">
+            <h2>Abd AlRahman Shaheen</h2>
+            <p>ID: 1211753</p>
+            <p>Projects: private accounting program (c), local web server(html)(css)(python), simple CPU(multisim)(vhdl). </p>
+            <p>Skills: c,c++,css,html,python,java,verilog,embeded c, fast learning, self learning. </p>
+            <p>Hobbies: Coding, gamming, smoking. </p>
+        </div>
+
+        <div class="student">
+            <img src="student3.jpg" alt="student3 image" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; position: absolute; top: 10px; right: 10px;">
+            <h2>Mahmoud Awad</h2>
+            <p>ID: 1212677</p>
+            <p>Projects: Train Seat Reserving System</p>
+            <p>Skills: Programming</p>
+            <p>Hobbies: Cycling</p>
+        </div>
+    </div>
+
+    <a href="main_ar.html"> Arabic Page</a>
+    <a href="https://www.w3schools.com/python/python_strings.asp">Python Strings at W3Schools</a>
+</body>
+</html>

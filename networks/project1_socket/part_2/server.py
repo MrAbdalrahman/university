@@ -3,7 +3,7 @@ import threading
 import time
 
 dataBase = ["1211753", "1222500", "12126771"]
-PORT = 5050  # using port 5050
+PORT = 9955  # using port 9955
 FORMAT = "utf-8"  # format used for our messages decoding
 HEADER = 64
 D = "DES"
