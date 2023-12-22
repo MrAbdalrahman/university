@@ -33,7 +33,7 @@ class MyHTTPServer:
         file_path = path.lstrip("/")
 
         if method == "GET":
-            if file_path == "index.html":
+            if file_path == "index.html" or file_path == "en" or file_path == "":
                 status_code = "200"
                 self.log_request_details(client_address, method, path, "HTML", status_code)
                 self.send_html_response(client_socket, "main_en.html")
@@ -41,10 +41,6 @@ class MyHTTPServer:
                 status_code = "200"
                 self.log_request_details(client_address, method, path, "HTML", status_code)
                 self.send_html_response(client_socket, "main_ar.html")
-            elif file_path == "en":
-                status_code = "200"
-                self.log_request_details(client_address, method, path, "HTML", status_code)
-                self.send_html_response(client_socket, "main_en.html")
             elif file_path.endswith(".html"):
                 status_code = "200"
                 self.log_request_details(client_address, method, path, "HTML", status_code)
@@ -66,7 +62,7 @@ class MyHTTPServer:
                 self.log_request_details(client_address, method, path, "Redirect", status_code)
                 self.send_redirect(client_socket, file_path)
             else:
-                # If the file is not found, set the status code to 404
+
                 status_code = "404"
                 self.log_request_details(client_address, method, path, "Unknown", status_code)
                 self.send_error_response(client_socket)
@@ -111,17 +107,16 @@ class MyHTTPServer:
             self.send_error_response(client_socket)
 
     def send_error_response(self, client_socket):
-        # HTTP response line and headers for a 404 Not Found error
+
         response = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n"
 
-        # Try to open and send the 'DNE.html' file
         try:
             with open(os.path.join("static", "DNE.html"), "rb") as file:
                 content = file.read()
-            # Send the response to the client including the content of 'DNE.html'
+
             client_socket.sendall(response.encode("utf-8") + content)
         except FileNotFoundError:
-            # If 'DNE.html' is not found, send a simple error message
+
             error_message = "<html><body><h1>File Not Found</h1></body></html>"
             client_socket.sendall(response.encode("utf-8") + error_message.encode("utf-8"))
 
