@@ -109,7 +109,7 @@ void LCD_set_cursor_pos(int row, int col)
 }
 int main()
 {
- unsigned char name[] = "abdelrahman" ;
+ unsigned char name[] = "abdel rahman shahen" ;
 	unsigned char id[] = "1211753" ;
  int col1 = 0, row1 = 0,col2 = 0 ,row2 = 0;
  IO1DIR = 0x00FE0000; /* LCD pins set as output P1.16 ..P1.19 */

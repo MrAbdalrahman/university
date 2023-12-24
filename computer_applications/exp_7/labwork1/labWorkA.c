@@ -114,7 +114,7 @@ void LCD_Init(void)
 
 int main()
 {
- unsigned char name[] = "Abdelrahman";
+ unsigned char name[] = "abdel rahman";
  IO1DIR = 0x00FE0000; /* LCD pins set as o/p????????? */
  LCD_Init(); /* Initialise LCD */
 while(1) {

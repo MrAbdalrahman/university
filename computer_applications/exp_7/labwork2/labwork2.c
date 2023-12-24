@@ -121,7 +121,7 @@ void LCD_set_cursor_pos(int row, int col)
 }
 int main()
 {
- unsigned char name[] = "abdelrahman";
+ unsigned char name[] = "Abdel rahman";
  int col = 0, row = 0;
  IO1DIR = 0x00FE0000; /* LCD pins set as output P1.16 ..P1.19 */
  IO0DIR &= (0xFFFFFFF0); //Push button keys as inputs P0.0 ..P0.3
