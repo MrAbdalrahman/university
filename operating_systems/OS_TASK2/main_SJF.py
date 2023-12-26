@@ -1,12 +1,11 @@
-# FCFS 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
+# SJF 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
 
 
 import multiprocessing
 from time import sleep
 
 import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
+
 
 
 speed = 33  # (Adjust as you like but for accuracy: ceil(61% * runTime)  is the perfect speed after some calculations)
@@ -77,9 +76,13 @@ def readyQueueFiller2(readyQueue, waitingProcesses, currentTime, timesToWait, re
 
 
 def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, removed, finishTimes):
+    readyList = []
     while currentTime.value < runTime:
         if readyQueue:
-            process = readyQueue.get()
+            while not readyQueue.empty():
+                readyList.append(readyQueue.get())
+            readyList.sort(key=lambda x: x.burst_time)
+            process = readyList.pop(0)
             executeProcess(process, currentTime, removed, finishTimes)
             completedProcesses.append(process)
             waitingProcesses.append(process)
@@ -135,15 +138,15 @@ def main():
                                                                                currentTime))
     # ready queue filling process
 
-    readyQueueProcess2 = multiprocessing.Process(target=readyQueueFiller2, args=(readyQueue,
-                                                                                 waitingProcesses,
-                                                                                 currentTime, timesToWait, removed))
+    #readyQueueProcess2 = multiprocessing.Process(target=readyQueueFiller2, args=(readyQueue,
+    #                                                                           waitingProcesses,
+    #                                                                           currentTime, timesToWait, removed))
     # ready queue filling process2
 
     timerProcess = multiprocessing.Process(target=timeStart, args=(waitingProcesses,
                                                                    currentTime, timesToWait, removed))
     # creating a timer process that will start the timer
-    readyQueueProcess2.start()  # starting filling the ready queue with the waiting processes
+    # readyQueueProcess2.start()  # starting filling the ready queue with the waiting processes
     timerProcess.start()  # starting timer
     schedulingProcess.start()  # starting scheduler
     readyQueueProcess.start()  # starting filling the ready queue
@@ -154,24 +157,6 @@ def main():
         turnAroundTimes[process.process_id-1] = finishTimes[process.process_id-1] - process.arrival_time
         waitingTimes[process.process_id-1] = turnAroundTimes[process.process_id-1] - process.burst_time
         startTimes[process.process_id-1] = finishTimes[process.process_id-1] - process.burst_time
-
-    print("                           Gantt chart")
-
-    for process in processes:
-        if process.process_id == 7:
-            print(f"|{startTimes[process.process_id - 1]} p{process.process_id} {finishTimes[process.process_id - 1]}|",
-                  end="")
-        else:
-            print(f"|{startTimes[process.process_id-1]} p{process.process_id} {finishTimes[process.process_id-1]}",
-                  end="")
-
-    print("process id    arrival time    burst time    finish time    turn around time    waiting time")
-
-    for process in processes:
-        print(f"p{process.process_id}    {process.arrival_time}    {process.burst_time}    "
-              f"{finishTimes[process.process_id-1]}    {turnAroundTimes[process.process_id-1]}   "
-              f" {waitingTimes[process.process_id-1]}")
-
 
     sum = 0
     for i in range(7):
@@ -217,7 +202,7 @@ def main():
 
     plt.show()
 
-    readyQueueProcess2.join()  # joining new process to the other processes
+   # readyQueueProcess2.join()  # joining new process to the other processes
     timerProcess.join()  # joining new process to the other processes
     readyQueueProcess.join()  # joining new process to the other processes
     schedulingProcess.join()  # joining the process to the other processes
