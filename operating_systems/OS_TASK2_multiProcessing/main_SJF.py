@@ -1,11 +1,14 @@
-# RR 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
+# SJF 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
+
 
 import multiprocessing
 from time import sleep
 
 import matplotlib.pyplot as plt
 
-speed = 10  # (Adjust as you like but for accuracy: ceil(61% * runTime)  is the perfect speed after some calculations)
+
+
+speed = 33
 runTime = 54  # (Reminder: 200)
 quantum = 5  # (Reminder: 5)
 decrement = 1  # (Reminder: 1)
@@ -39,36 +42,16 @@ def createProcesses(values):
     return processes
 
 
-def executeProcess(process, currentTime, removed, finishTimes, remainingTimes,
-                   readyQueue, startTimes, numOfExe):
-
+def executeProcess(process, currentTime, removed, finishTimes):
     print(f"Executing process{process.process_id} at time {currentTime.value}")
-
-    burstFor = 0
-
-    if remainingTimes[process.process_id -1] >= quantum:
-        burstFor = quantum
-    else:
-        burstFor = remainingTimes[process.process_id -1]
-
-    startTimes[numOfExe.value] = currentTime.value
-
-    for i in range(burstFor):
-        sleep(1.1/speed)
-        remainingTimes[process.process_id - 1] -= 1
-    if remainingTimes[process.process_id -1] != 0:
-        readyQueue.put(process)
-        print(f"process{process.process_id} just got into the ready queue {currentTime.value}")
-
-
-    finishTimes[numOfExe.value] = currentTime.value
+    sleep(process.burst_time / speed)
+    finishTimes[process.process_id - 1] = currentTime.value
+    print(f"P{process.process_id} finished at time {currentTime.value}")
     removed[process.process_id - 1] = 0
-    print(f"P{process.process_id} has { remainingTimes[process.process_id -1 ]} left  at time {currentTime.value}")
 
 
 
-
-def readyQueueFiller(readyQueue, processes, currentTime,):
+def readyQueueFiller(readyQueue, processes, currentTime):
     sleepTimes = [1, 2, 1, 2, 1, 1]
     index = 0
     for process in processes:
@@ -92,16 +75,16 @@ def readyQueueFiller2(readyQueue, waitingProcesses, currentTime, timesToWait, re
     print("readyQueue filler stopped")
 
 
-def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, removed, finishTimes,
-             remainingTimes, startTimes, numOfExe, executedTimes):
-
+def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, removed, finishTimes):
+    readyList = []
     while currentTime.value < runTime:
         if readyQueue:
-            process = readyQueue.get()
-            executeProcess(process, currentTime, removed, finishTimes, remainingTimes, readyQueue, startTimes, numOfExe)
-            executedTimes[process.process_id - 1] += 1
+            while not readyQueue.empty():
+                readyList.append(readyQueue.get())
+            readyList.sort(key=lambda x: x.burst_time)
+            process = readyList.pop(0)
+            executeProcess(process, currentTime, removed, finishTimes)
             completedProcesses.append(process)
-            numOfExe.value += 1
             waitingProcesses.append(process)
             print(f"added process{process.process_id} to the waiting processes ")
     print("scheduler stopped")
@@ -109,7 +92,7 @@ def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, remo
 
 def timeStart(waitingProcesses, currentTime, timesToWait, removed):
     while currentTime.value < runTime:  # keep counting till runTime
-        sleep(1.08/speed)  # sleep for one unit of time
+        sleep(0.95 / speed)  # sleep for one unit of time
         currentTime.value += 1  # then increase time
         print(f"current time: {currentTime.value}")  # then print that current time
 
@@ -124,22 +107,17 @@ def timeStart(waitingProcesses, currentTime, timesToWait, removed):
 def main():
     manager = multiprocessing.Manager()  # Creating a manager object
     readyQueue = multiprocessing.Queue()  # creating ready queue
-    numOfExe = multiprocessing.Value('i', 0)
     waitingProcesses = manager.list()  # creating waiting list
-    startTimes = manager.Array('i', [0] * 100)  # creating a shared start times array
-    finishTimes = manager.Array('i', [0] * 100)   # creating a shared finish times array
-    turnAroundTimes = manager.Array('i', [0] * 7)  # creating a shared turn around times array
-    waitingTimes = manager.Array('i', [0] * 7)  # creating a shared waiting times array
-    remainingTimes = manager.Array('i',[10, 8, 14, 7 , 5, 4, 6])
-    stopFlag = manager.Value('i', 0)
-    currentBurstTime = manager.Value('i',0)
+    startTimes = manager.Array('i', [0, 0, 0, 0, 0, 0, 0])  # creating a shared start times list
+    finishTimes = manager.Array('i', [0, 0, 0, 0, 0, 0, 0])   # creating a shared finish times list
+    turnAroundTimes = manager.Array('i', [0, 0, 0, 0, 0, 0, 0])  # creating a shared turn around times list
+    waitingTimes = manager.Array('i', [0, 0, 0, 0, 0, 0, 0])  # creating a shared waiting times list
+
     completedProcesses = manager.list()  # creating a list for completed processes
     currentTime = multiprocessing.Value('i', 0)  # shared timer
     timesToWait = multiprocessing.Array('i', [2, 4, 6, 8, 3, 6, 9])  # shared array saves the current
-    waitMore =multiprocessing.Value('f', 0)
     # time to wait for each process
-    removed = multiprocessing.Array('i', [0] * 7)  # shared array to save each removed
-    executedTimes = multiprocessing.Array('i',[0] * 7)  # shared array to save how many time the process went into cpu
+    removed = multiprocessing.Array('i', [0, 0, 0, 0, 0, 0, 0])  # shared array to save each removed
     # process because I couldn't find a way to remove it without having issues
     values = [[0, 1, 3, 4, 6, 7, 8],  # the values for the processes status and times
               [10, 8, 14, 7, 5, 4, 6],
@@ -152,9 +130,7 @@ def main():
     schedulingProcess = multiprocessing.Process(target=schedule, args=(
                                                                        readyQueue, waitingProcesses,
                                                                        completedProcesses, currentTime,
-                                                                       removed, finishTimes,
-                                                                       remainingTimes,
-                                                                       startTimes, numOfExe, executedTimes))
+                                                                       removed, finishTimes))
     # creating the process that will
 
     # schedule the 7 processes and blot the gantt chart
@@ -162,45 +138,25 @@ def main():
                                                                                currentTime))
     # ready queue filling process
 
-    #readyQueueProcess2 = multiprocessing.Process(target=readyQueueFiller2, args=(readyQueue,
-    #                                                                          waitingProcesses,
-    #                                                                             currentTime, timesToWait, removed))
+    readyQueueProcess2 = multiprocessing.Process(target=readyQueueFiller2, args=(readyQueue,
+                                                                            waitingProcesses,
+                                                                               currentTime, timesToWait, removed))
     # ready queue filling process2
 
     timerProcess = multiprocessing.Process(target=timeStart, args=(waitingProcesses,
                                                                    currentTime, timesToWait, removed))
     # creating a timer process that will start the timer
-   # readyQueueProcess2.start()  # starting filling the ready queue with the waiting processes
+    readyQueueProcess2.start()  # starting filling the ready queue with the waiting processes
     timerProcess.start()  # starting timer
     schedulingProcess.start()  # starting scheduler
     readyQueueProcess.start()  # starting filling the ready queue
 
-    sleep(runTime/speed + 2)
-
-    for i in completedProcesses:
-        print(i)
-
-    occurrences = [0, 0, 0, 0, 0, 0, 0]
-    realFinishTimes = [0, 0, 0, 0, 0, 0, 0]
-    indx = 0
-
-
-    for i in finishTimes:
-        if i == 0:
-            break
-        occurrences[completedProcesses[indx].process_id - 1] += 1
-        if executedTimes[completedProcesses[indx].process_id - 1] == occurrences[completedProcesses[indx].process_id - 1]:
-            realFinishTimes[completedProcesses[indx].process_id - 1] = i
-        indx += 1
-
-    for i in   realFinishTimes:
-        print(i)
-
-
+    sleep(runTime/speed + 5)
 
     for process in processes:
-        turnAroundTimes[process.process_id-1] = realFinishTimes[process.process_id-1] - process.arrival_time
+        turnAroundTimes[process.process_id-1] = finishTimes[process.process_id-1] - process.arrival_time
         waitingTimes[process.process_id-1] = turnAroundTimes[process.process_id-1] - process.burst_time
+        startTimes[process.process_id-1] = finishTimes[process.process_id-1] - process.burst_time
 
     sum = 0
     for i in range(7):
@@ -212,18 +168,18 @@ def main():
         sum += waitingTimes[i]
     average2 = float(sum / 7)
 
-
     print(f"average turn around times= {average1}    ", end="")
     print(f"average waiting times= {average2}    ")
 
-    myProcesses = []
-    counter = 0
-
-    for i in completedProcesses:
-        myProcesses += [
-        {f'process_name': f" p{i.process_id}", 'start_time': startTimes[counter], 'end_time': finishTimes[counter]},
-                       ]
-        counter += 1
+    myProcesses = [
+        {'process_name': 'process 1', 'start_time': startTimes[0], 'end_time': finishTimes[0]},
+        {'process_name': 'process 2', 'start_time': startTimes[1], 'end_time': finishTimes[1]},
+        {'process_name': 'process 3', 'start_time': startTimes[2], 'end_time': finishTimes[2]},
+        {'process_name': 'process 4', 'start_time': startTimes[3], 'end_time': finishTimes[3]},
+        {'process_name': 'process 5', 'start_time': startTimes[4], 'end_time': finishTimes[4]},
+        {'process_name': 'process 6', 'start_time': startTimes[5], 'end_time': finishTimes[5]},
+        {'process_name': 'process 7', 'start_time': startTimes[6], 'end_time': finishTimes[6]}
+    ]
 
     fig, ax = plt.subplots(figsize=(20, 12))
     for i, process in enumerate(myProcesses):
@@ -246,7 +202,7 @@ def main():
 
     plt.show()
 
-  # readyQueueProcess2.join()  # joining new process to the other processes
+    readyQueueProcess2.join()  # joining new process to the other processes
     timerProcess.join()  # joining new process to the other processes
     readyQueueProcess.join()  # joining new process to the other processes
     schedulingProcess.join()  # joining the process to the other processes

@@ -3,14 +3,16 @@
 
 import multiprocessing
 from time import sleep
+import numpy as np
 
 import matplotlib.pyplot as plt
 
-speed = 5  # (Adjust as you like but for accuracy: ceil(61% * runTime)  is the perfect speed after some calculations)
-runTime = 54  # (Reminder: 200)
+speed = 10
+runTime = 58  # (Reminder: 200)
 quantum = 5  # (Reminder: 5)
 decrement = 1  # (Reminder: 1)
 timeToStay = 5  # (Reminder: 5)
+v = 0
 
 
 class Process:
@@ -41,42 +43,44 @@ def createProcesses(values):
 
 
 def executeProcess(process, currentTime, removed, finishTimes, remainingTimes, stopFlag,
-                   readyQueue, currentBurstTime, startTimes, numOfExe):
+                   readyQueue, currentPriority, startTimes, numOfExe, waitMore):
+    global v
 
     print(f"Executing process{process.process_id} at time {currentTime.value}")
 
-    burstFor = remainingTimes[process.process_id -1]
+    burstFor = remainingTimes[process.process_id - 1]
 
     startTimes[numOfExe.value] = currentTime.value
 
     for i in range(burstFor):
-        sleep(1.1/speed)
+        sleep(1/speed - (waitMore.value * 0.0099)/speed)
         remainingTimes[process.process_id - 1] -= 1
-        currentBurstTime.value -=1
         if stopFlag.value == 1:
-            print(f"process {process.process_id} stopped by flag")
-            readyQueue.put(process)
+            print(f"process {process.process_id} stopped by flag. priority: {process.priority}")
+            readyQueue.append(process)
             break
 
     stopFlag.value = 0
     finishTimes[numOfExe.value] = currentTime.value
     removed[process.process_id - 1] = 0
     print(f"P{process.process_id} has { remainingTimes[process.process_id -1 ]} left  at time {currentTime.value}")
+    waitMore.value = 0
 
 
 
-
-def readyQueueFiller(readyQueue, processes, currentTime, stopFlag, currentBurstTime ):
+def readyQueueFiller(readyQueue, processes, currentTime, stopFlag, currentPriority):
     sleepTimes = [1, 2, 1, 2, 1, 1]
     index = 0
     for process in processes:
         if process.process_id == 1:
             continue
-        sleep(sleepTimes[index] / speed)
+        sleep((+sleepTimes[index] - 0.3) / speed)
+        readyQueue.append(process)
         index += 1
-        readyQueue.put(process)
-        if process.burst_time < currentBurstTime.value:
+        print(f" process.priority{process.priority} currentPriority.value{currentPriority.value}")
+        if process.priority < currentPriority.value:
             stopFlag.value = 1
+
         print(f"process {process.process_id} just got into the ready queue {currentTime.value}")
 
 
@@ -86,27 +90,41 @@ def readyQueueFiller2(readyQueue, waitingProcesses, currentTime, timesToWait, re
             if removed[process.process_id - 1] == 1:
                 continue
             if timesToWait[process.process_id - 1] == 0:
-                readyQueue.put(process)
+                readyQueue.append(process)
                 removed[process.process_id - 1] = 1
                 timesToWait[process.process_id - 1] = process.comes_back_after
     print("readyQueue filler stopped")
 
 
 def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, removed, finishTimes,
-             remainingTimes, stopFlag, currentBurstTime, startTimes, numOfExe, waitMore, executedTimes):
-    readyList = []
+             remainingTimes, stopFlag, currentPriority, startTimes, numOfExe, waitMore, executedTimes, priorities):
     while currentTime.value < runTime:
-        if readyQueue:
-            while not readyQueue.empty():
-                readyList.append(readyQueue.get())
-                waitMore.value = 0.1/speed
-            waitMore.value = 0
+        while readyQueue:
+            index = 0
+            realIndex = 0
+            min = priorities[0]
+            for i in priorities:
+                if i<min:
+                    min = i
+            while(1):
+                waitMore.value +=1
+                if min == priorities[index]:
+                    break
+                index += 1
 
-            readyList.sort(key=lambda x: x.burst_time)
-            process = readyList.pop(0)
+                j = 0
+                for i in readyQueue:
+                    if i.process_id -1 == index:
+                        realIndex = j
+                    j += 1
 
-            currentBurstTime.value = process.burst_time
-            executeProcess(process, currentTime, removed, finishTimes, remainingTimes, stopFlag, readyQueue, currentBurstTime, startTimes, numOfExe)
+            process = readyQueue.pop(realIndex)
+            print(f"fa3eer {process.process_id} {priorities[process.process_id -1 ]}")
+            currentPriority.value = priorities[process.process_id - 1]
+            print(f"currentPriority.value changed to {currentPriority.value} which is processes {process.process_id}")
+            executeProcess(process, currentTime, removed, finishTimes, remainingTimes,
+                            stopFlag, readyQueue, currentPriority, startTimes, numOfExe, waitMore)
+
             executedTimes[process.process_id - 1] += 1
             completedProcesses.append(process)
             numOfExe.value += 1
@@ -115,12 +133,22 @@ def schedule(readyQueue, waitingProcesses, completedProcesses, currentTime, remo
     print("scheduler stopped")
 
 
-def timeStart(waitingProcesses, currentTime, timesToWait, removed, waitMore):
+def timeStart(waitingProcesses, currentTime, timesToWait,
+              removed, waitMore, readyQueue, currentPriority,
+              stopFlag, priorities):
     while currentTime.value < runTime:  # keep counting till runTime
-        sleep(1.09/speed + waitMore.value)  # sleep for one unit of time
+        sleep(0.9/speed )  # sleep for one unit of time
         currentTime.value += 1  # then increase time
-        print(f"current time: {currentTime.value}")  # then print that current time
+        if currentTime.value % 5 == 0:
+            if currentPriority.value != 0:
+                currentPriority.value -= 1
+            for process in readyQueue:
+                if priorities[process.process_id - 1] != 0:
+                    priorities[process.process_id - 1] -= 1
+                    if priorities[process.process_id - 1] < currentPriority.value:
+                        stopFlag.value = 1
 
+        print(f"current time: {currentTime.value}")  # then print that current time
         for process in waitingProcesses:
             if removed[process.process_id - 1] == 1:
                 continue
@@ -131,7 +159,7 @@ def timeStart(waitingProcesses, currentTime, timesToWait, removed, waitMore):
 
 def main():
     manager = multiprocessing.Manager()  # Creating a manager object
-    readyQueue = multiprocessing.Queue()  # creating ready queue
+    readyQueue = manager.list()  # creating ready queue
     numOfExe = multiprocessing.Value('i', 0)
     waitingProcesses = manager.list()  # creating waiting list
     startTimes = manager.Array('i', [0] * 100)  # creating a shared start times array
@@ -139,15 +167,17 @@ def main():
     turnAroundTimes = manager.Array('i', [0] * 7)  # creating a shared turn around times array
     waitingTimes = manager.Array('i', [0] * 7)  # creating a shared waiting times array
     remainingTimes = manager.Array('i',[10, 8, 14, 7 , 5, 4, 6])
+    priorities = manager.Array('i', [3, 2, 3, 1, 0, 1, 2] )
+
     stopFlag = manager.Value('i', 0)
-    currentBurstTime = manager.Value('i',0)
+    currentPriority = manager.Value('i', 0)
     completedProcesses = manager.list()  # creating a list for completed processes
     currentTime = multiprocessing.Value('i', 0)  # shared timer
     timesToWait = multiprocessing.Array('i', [2, 4, 6, 8, 3, 6, 9])  # shared array saves the current
-    waitMore =multiprocessing.Value('f', 0)
+    waitMore = multiprocessing.Value('f', 0)
     # time to wait for each process
     removed = multiprocessing.Array('i', [0] * 7)  # shared array to save each removed
-    executedTimes = multiprocessing.Array('i',[0] * 7)  # shared array to save how many time the process went into cpu
+    executedTimes = multiprocessing.Array('i',[0] * 7)  # shared array to save how many times the process went into cpu
     # process because I couldn't find a way to remove it without having issues
     values = [[0, 1, 3, 4, 6, 7, 8],  # the values for the processes status and times
               [10, 8, 14, 7, 5, 4, 6],
@@ -156,18 +186,19 @@ def main():
 
     processes = createProcesses(values)  # process creations
 
-    readyQueue.put(processes[0])
+    readyQueue.append(processes[0])
     schedulingProcess = multiprocessing.Process(target=schedule, args=(
                                                                        readyQueue, waitingProcesses,
                                                                        completedProcesses, currentTime,
                                                                        removed, finishTimes,
-                                                                       remainingTimes, stopFlag, currentBurstTime,
-                                                                       startTimes, numOfExe, waitMore,executedTimes))
+                                                                       remainingTimes, stopFlag, currentPriority,
+                                                                       startTimes, numOfExe,
+                                                                       waitMore, executedTimes, priorities))
     # creating the process that will
 
     # schedule the 7 processes and blot the gantt chart
     readyQueueProcess = multiprocessing.Process(target=readyQueueFiller, args=(readyQueue, processes,
-                                                                               currentTime, stopFlag, currentBurstTime))
+                                                                               currentTime, stopFlag, currentPriority))
     # ready queue filling process
 
     #readyQueueProcess2 = multiprocessing.Process(target=readyQueueFiller2, args=(readyQueue,
@@ -176,7 +207,10 @@ def main():
     # ready queue filling process2
 
     timerProcess = multiprocessing.Process(target=timeStart, args=(waitingProcesses,
-                                                                   currentTime, timesToWait, removed, waitMore))
+                                                                   currentTime, timesToWait,
+                                                                   removed, waitMore,
+                                                                   readyQueue, currentPriority,
+                                                                   stopFlag, priorities))
     # creating a timer process that will start the timer
    # readyQueueProcess2.start()  # starting filling the ready queue with the waiting processes
     timerProcess.start()  # starting timer

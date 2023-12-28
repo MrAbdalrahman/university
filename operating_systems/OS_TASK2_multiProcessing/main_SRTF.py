@@ -6,7 +6,7 @@ from time import sleep
 
 import matplotlib.pyplot as plt
 
-speed = 5  # (Adjust as you like but for accuracy: ceil(61% * runTime)  is the perfect speed after some calculations)
+speed = 5
 runTime = 54  # (Reminder: 200)
 quantum = 5  # (Reminder: 5)
 decrement = 1  # (Reminder: 1)
