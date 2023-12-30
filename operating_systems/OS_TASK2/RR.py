@@ -109,6 +109,7 @@ def main():
                     allArrivals.append(process.nextComesIn + 1)
                 else:
                     allArrivals.append(process.nextComesIn)
+                process.executedBefore = True
                 process.executed = True
                 process.nextComesIn = currentTime + process.comesBackAfter
                 finishedProcesses.append(process)
