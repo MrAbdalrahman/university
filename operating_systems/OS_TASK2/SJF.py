@@ -1,39 +1,37 @@
 # SJF 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
-
 import matplotlib.pyplot as plt
 
 runTime = 201
 
 
 class Process:
-    def __init__(self, process_id, arrival_time, burst_time, comes_back_after, priority):
-        self.process_id = process_id
-        self.arrival_time = arrival_time
-        self.burst_time = burst_time
-        self.comes_back_after = comes_back_after
+    def __init__(self, processId, arrivalTime, burstTime, comesBackAfter, priority):
+        self.processId = processId
+        self.arrivalTime = arrivalTime
+        self.burstTime = burstTime
+        self.comesBackAfter = comesBackAfter
         self.priority = priority
-        self.remainingTime = burst_time
-        self.nextComesIn = arrival_time
-        self.executed = False
+        self.remainingTime = burstTime
+        self.nextComesIn = arrivalTime
         self.executedBefore = False
+        self.executed = False
 
     def __str__(self):
-        return f"P{self.process_id}: Arrival Time = {self.arrival_time}, Burst Time = {self.burst_time}, Comes Back " \
-               f"After = {self.comes_back_after}, Priority = {self.priority},nextComesIn: {self.nextComesIn} "
+        return f"P{self.processId}: Arrival Time = {self.arrivalTime}, Burst Time = {self.burstTime}, Comes Back " \
+               f"After = {self.comesBackAfter}, Priority = {self.priority},nextComesIn: {self.nextComesIn} "
 
 
 def createProcesses(values):
     processes = []
     for i in range(1, 8):  # iterate 7 times 1 to 8
-        arrival_time = values[0][i - 1]
+        arrivalTime = values[0][i - 1]
         burst_time = values[1][i - 1]
         comes_back_after = values[2][i - 1]
         priority = values[3][i - 1]
-
-        process = Process(i, arrival_time, burst_time, comes_back_after, priority)
+        process = Process(i, arrivalTime, burst_time, comes_back_after, priority)
         processes.append(process)
-
     return processes
+
 
 def main():
     currentTime = 0
@@ -47,10 +45,10 @@ def main():
     readyQueue = []
     executions = []
     readyQueue.append(processes[0])
-    print("process 1 is already in the ready queue")
-    waitingQueue =[]
+    waitingQueue = []
+
     for process in processes:
-        if process.process_id == 1:
+        if process.processId == 1:
             continue
         waitingQueue.append(process)
 
@@ -64,7 +62,7 @@ def main():
             for All in waitingQueue:
                 if All.nextComesIn == currentTime:
                     readyQueue.append(waitingQueue.pop(0))
-                    print(f"process {All.process_id} got into ready queue {currentTime}")
+                    print(f"process{All.processId} inserted to the ready Queue at time:{currentTime + 1}")
                     for i in readyQueue:
                         print(i)
         if readyQueue:
@@ -75,67 +73,48 @@ def main():
                 if process.executed:
                     process.executed = False
                     process = front
-            if process.remainingTime == process.burst_time:
+            if process.remainingTime == process.burstTime:
                 startTimes.append(currentTime)
-                print(f"started executing p{process.process_id} {currentTime}")
+                print(f"process{process.processId} started execution at time:{currentTime}")
             process.remainingTime -= 1
             if process.remainingTime == 0:  # if process just finished
-                print(f"process {process.process_id} finished exe at {currentTime}")
-                process.remainingTime = process.burst_time
+                print(f"process{process.processId} finished execution at time:{currentTime + 1}")
+                process.remainingTime = process.burstTime
                 if process.executedBefore:
                     allArrivals.append(process.nextComesIn + 1)
                 else:
                     allArrivals.append(process.nextComesIn)
                 process.executedBefore = True
                 process.executed = True
-                process.nextComesIn = currentTime + process.comes_back_after
+                process.nextComesIn = currentTime + process.comesBackAfter
                 executions.append(process)
                 waitingQueue.append(process)
                 readyQueue.remove(process)
-                print(f"process {process.process_id} just got got into waiting queue {currentTime}")
-                for i in waitingQueue:
-                    print(i)
+                print(f"process{process.processId} inserted to the waiting Queue at time:{currentTime + 1}")
                 endTimes.append(currentTime + 1)
-                readyQueue.sort(key=lambda p: p.burst_time)
+                readyQueue.sort(key=lambda p: p.burstTime)
         currentTime += 1
-        print(currentTime)
 
     turnAroundTimes = []
     waitingTimes = []
-
     executionTimes = []
+
     i = 0
     for process in executions:
         turnAroundTimes.append(endTimes[i] - allArrivals[i])  # s
         executionTimes.append(endTimes[i] - startTimes[i])
         waitingTimes.append(turnAroundTimes[i] - executionTimes[i])
         i += 1
-    counter = 0
 
-
-    for m in allArrivals:
-        print(f"{executions[counter].process_id} {m}  {endTimes[counter]}")
-
-        counter += 1
-
-    for m in allArrivals:
-        print(f"{m} ",end="")
-    print("")
-
-    for p in executions:
-        print(f"{p.burst_time} " , end="")
-    print("")
-
-
-    sum = 0
+    summation = 0
     for i in turnAroundTimes:
-        sum += i
-    average1 = float(sum / len(turnAroundTimes))
+        summation += i
+    average1 = float(summation / len(turnAroundTimes))
 
-    sum = 0
+    summation = 0
     for i in waitingTimes:
-        sum += i
-    average2 = float(sum / len(waitingTimes))
+        summation += i
+    average2 = float(summation / len(waitingTimes))
 
     print(f"average turn around times= {average1}    ", end="")
     print(f"average waiting times= {average2}    ")
@@ -145,7 +124,7 @@ def main():
 
     for i in executions:
         myProcesses += [
-        {f'process_name': f" p{i.process_id}", 'start_time': startTimes[counter], 'end_time': endTimes[counter]},
+        {f'process_name': f" p{i.processId}", 'start_time': startTimes[counter], 'end_time': endTimes[counter]},
                        ]
         counter += 1
 
@@ -169,18 +148,6 @@ def main():
     ax.legend()
 
     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
