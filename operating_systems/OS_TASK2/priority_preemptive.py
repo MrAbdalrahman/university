@@ -1,12 +1,13 @@
-# FCFS 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
+# priority preemptive 1211753 mr.abdelrahman Shahen Dr. Abdel Salam Sayad
 
 import matplotlib.pyplot as plt
 
-runTime = 201
+runTime = 200
 
 
 class Process:
     def __init__(self, process_id, arrival_time, burst_time, comes_back_after, priority):
+        self.originalPriority = priority
         self.process_id = process_id
         self.arrival_time = arrival_time
         self.burst_time = burst_time
@@ -14,11 +15,13 @@ class Process:
         self.priority = priority
         self.remainingTime = burst_time
         self.nextComesIn = arrival_time
-        self.executedBefore = False
+        self.executed = False
+        self.timeInReadyQueue = 0
+        self.inReadyQueue = False
 
     def __str__(self):
         return f"P{self.process_id}: Arrival Time = {self.arrival_time}, Burst Time = {self.burst_time}, Comes Back " \
-               f"After = {self.comes_back_after}, Priority = {self.priority},nextComesIn: {self.nextComesIn} "
+               f"After = {self.comes_back_after}, Priority = {self.priority},nextComesIn: {self.nextComesIn} , remaining {self.remainingTime} "
 
 
 def createProcesses(values):
@@ -36,7 +39,7 @@ def createProcesses(values):
 
 def main():
     currentTime = 0
-    allArrivals = []
+
     values = [[0, 1, 3, 4, 6, 7, 8],  # the values for the processes status and times
               [10, 8, 14, 7, 5, 4, 6],
               [2, 4, 6, 8, 3, 6, 9],
@@ -45,74 +48,110 @@ def main():
     processes = createProcesses(values)  # process creations
     readyQueue = []
     executions = []
+    readyQueue.append(processes[0])
     print("process 1 is already in the ready queue")
     waitingQueue =[]
     for process in processes:
+        if process.process_id == 1:
+            continue
         waitingQueue.append(process)
+
     startTimes = []
     endTimes = []
     process = None
+    previousProcess = None
 
 
     while currentTime != runTime:
         if waitingQueue:
-            for All in waitingQueue:
-                if All.nextComesIn == currentTime:
-                    readyQueue.append(waitingQueue.pop(0))
-                    print(f"process {All.process_id} got into ready queue {currentTime + 1}")
-                    for i in waitingQueue:
-                        print(i)
+            j = len(waitingQueue)
+            while j > (0):
+                All = waitingQueue[len(waitingQueue) - j]
+                if All.nextComesIn == currentTime and currentTime != 1:
+                    j = len(waitingQueue)
+                    All.inReadyQueue = True
+                    readyQueue.append(All)
+                    waitingQueue.remove(All)
+                    print(f"process {All.process_id} got into ready queue {currentTime }")
+                readyQueue.sort(key=lambda p: (p.priority, p.nextComesIn))
+                j -= 1
+
+        readyQueue.sort(key=lambda p: (p.priority, p.nextComesIn))
+        if currentTime == 1:
+            readyQueue.append(waitingQueue.pop(0))
+            print("process 2 just got in to the ready queue")
         if readyQueue:
+            print("rr")
+            for l in readyQueue:
+                print(l)
             front = readyQueue[0]
+            print(f"f{front}")
+            print(f"f2{process}")
+            k = 1
+            while front == process:
+                front = readyQueue[k]
+            k += 1
             if currentTime == 0:
                 process = front
+                previousProcess = process
+                startTimes.append(currentTime)
+                process.inReadyQueue = False
+                print(f"started executing p{process.process_id} {currentTime}")
             else:
-                if front.remainingTime == front.burst_time:
+                if front.priority < process.priority or process.executed or \
+                (front.priority == process.priority and front.nextComesIn < process.nextComesIn):
+                    previousProcess = process
+                    if not process.executed:
+                        executions.append(process)
+                        endTimes.append(currentTime)
+                        process.inReadyQueue = True
+                        process.timeInReadyQueue = 0
+                        print(f"process {process.process_id} stoped  at {currentTime + 1}")
                     process = front
-            if process.remainingTime == process.burst_time:
+                    process.executed = False
+                    print(f"started executing p{process.process_id} {currentTime}")
+            if (process.remainingTime == process.burst_time or
+                    previousProcess.process_id != process.process_id) and (currentTime != 0):
+                previousProcess = process
                 startTimes.append(currentTime)
             process.remainingTime -= 1
             if process.remainingTime == 0:  # if process just finished
-                print(f"process {process.process_id} finished exe at {currentTime + 1}")
+                process.timeInReadyQueue = 0
+                print(f"process {process.process_id} finished exe at {currentTime + 1 }")
                 process.remainingTime = process.burst_time
-                if process.executedBefore:
-                    allArrivals.append(process.nextComesIn + 1)
-                else:
-                    allArrivals.append(process.nextComesIn)
-                process.executedBefore = True
+                process.executed = True
                 process.nextComesIn = currentTime + process.comes_back_after
+                process.priority = process.originalPriority
                 executions.append(process)
-                waitingQueue.append(readyQueue.pop(0))
+                waitingQueue.append(process)
+                print(currentTime)
+                readyQueue.remove(process)
                 print(f"process {process.process_id} just got got into waiting queue {currentTime + 1}")
                 for i in waitingQueue:
                     print(i)
                 endTimes.append(currentTime + 1)
+
+        for pr in readyQueue:
+            if pr.inReadyQueue:
+                pr.timeInReadyQueue += 1
+            if pr.timeInReadyQueue % 5 == 0 and pr.priority != 0 and pr.timeInReadyQueue != 0 and pr.inReadyQueue:
+                pr.priority -= 1
+
         currentTime += 1
         print(currentTime)
+        print("ready Queue: ")
+        for i in readyQueue:
+            print(i)
 
-    turnAroundTimes = []
-    waitingTimes = []
-    executionTimes = []
-    i = 0
+
+    turnAroundTimes = [0] * 7
+    waitingTimes = [0] * 7
+
+
     for process in executions:
-        turnAroundTimes.append(endTimes[i] - allArrivals[i]) # s
-        executionTimes.append(endTimes[i] - startTimes[i])
-        waitingTimes.append(turnAroundTimes[i] - executionTimes[i])
-        i += 1
+        turnAroundTimes[process.process_id-1] = endTimes[process.process_id-1] - process.arrival_time
+        waitingTimes[process.process_id-1] = turnAroundTimes[process.process_id-1] - process.burst_time
 
-
-        counter = 0
-    for m in allArrivals:
-        print(f"{m}  {endTimes[counter]}")
-        counter+=1
-
-    for m in allArrivals:
-        print(f"{m} ",end="")
-    print("")
-
-    for p in executions:
-        print(f"{p.burst_time} " , end="")
-    print("")
     sum = 0
     for i in turnAroundTimes:
         sum += i
@@ -155,6 +194,18 @@ def main():
     ax.legend()
 
     plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

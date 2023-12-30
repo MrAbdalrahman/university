@@ -15,6 +15,8 @@ class Process:
         self.remainingTime = burst_time
         self.nextComesIn = arrival_time
         self.executed = False
+        self.executedBefore = False
+        self.executingFor = 0
 
     def __str__(self):
         return f"P{self.process_id}: Arrival Time = {self.arrival_time}, Burst Time = {self.burst_time}, Comes Back " \
@@ -28,7 +30,6 @@ def createProcesses(values):
         burst_time = values[1][i - 1]
         comes_back_after = values[2][i - 1]
         priority = values[3][i - 1]
-
         process = Process(i, arrival_time, burst_time, comes_back_after, priority)
         processes.append(process)
 
@@ -41,7 +42,7 @@ def main():
               [10, 8, 14, 7, 5, 4, 6],
               [2, 4, 6, 8, 3, 6, 9],
               [3, 2, 3, 1, 0, 1, 2]]
-
+    allArrivals = []
     processes = createProcesses(values)  # process creations
     readyQueue = []
     executions = []
@@ -59,6 +60,11 @@ def main():
     previousProcess = None
 
 
+    finishedProcesses = []
+    actualStarts = []
+    actualEnds = []
+    acutalExecutionTimes = []
+
     while currentTime != runTime:
         if currentTime == 0:
             readyQueue.append(waitingQueue.pop(0))
@@ -69,6 +75,7 @@ def main():
                 process = front
                 previousProcess = process
                 startTimes.append(currentTime)
+                actualStarts.append(currentTime)
                 print(f"started executing p{process.process_id} {currentTime}")
             else:
                 if front.remainingTime < process.remainingTime or process.executed:
@@ -84,21 +91,29 @@ def main():
                     previousProcess.process_id != process.process_id) and (currentTime != 0):
                 previousProcess = process
                 startTimes.append(currentTime)
+                if process.remainingTime == process.burst_time:
+                    actualStarts.append(currentTime)
 
             process.remainingTime -= 1
             if process.remainingTime == 0:  # if process just finished
                 print(f"process {process.process_id} finished exe at {currentTime + 1 }")
                 process.remainingTime = process.burst_time
+                if process.executedBefore:
+                    allArrivals.append(process.nextComesIn + 1)
+                else:
+                    allArrivals.append(process.nextComesIn)
+                process.executedBefore = True
+                acutalExecutionTimes.append(process.executingFor)
                 process.executed = True
                 process.nextComesIn = currentTime + process.comes_back_after
+                finishedProcesses.append(process)
                 executions.append(process)
                 waitingQueue.append(process)
                 print(currentTime)
                 readyQueue.remove(process)
                 print(f"process {process.process_id} just got got into waiting queue {currentTime + 1}")
-                for i in waitingQueue:
-                    print(i)
                 endTimes.append(currentTime + 1)
+                actualEnds.append(currentTime + 1)
         if waitingQueue:
             for All in waitingQueue:
                 if All.nextComesIn == currentTime and currentTime != 0:
@@ -114,13 +129,19 @@ def main():
             print(i)
 
 
-    turnAroundTimes = [0] * 7
-    waitingTimes = [0] * 7
+    turnAroundTimes = []
+    waitingTimes = []
+    executionTimes = []
 
 
-    for process in executions:
-        turnAroundTimes[process.process_id-1] = endTimes[process.process_id-1] - process.arrival_time
-        waitingTimes[process.process_id-1] = turnAroundTimes[process.process_id-1] - process.burst_time
+
+
+    i = 0
+    for process in finishedProcesses:
+        turnAroundTimes.append(actualEnds[i] - allArrivals[i])
+        waitingTimes.append(turnAroundTimes[i] - process.burst_time)
+
+        i += 1
 
     sum = 0
     for i in turnAroundTimes:

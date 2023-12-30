@@ -2,7 +2,7 @@
 
 import matplotlib.pyplot as plt
 
-runTime = 60
+runTime = 201
 quantum = 5
 
 class Process:
@@ -61,6 +61,7 @@ def main():
 
 
     while currentTime != runTime:
+        j=0
         if currentTime == 0:
             readyQueue.append(waitingQueue.pop(0))
             print("process 2 just got in to the ready queue")
@@ -72,7 +73,7 @@ def main():
                 startTimes.append(currentTime)
                 print(f"started executing p{process.process_id} {currentTime}")
             else:
-                if process.executedAmmount == 5 or process.executed:
+                if process.executedAmmount == quantum or process.executed:
                     previousProcess = process
                     process.executedAmmount = 0
                     if not process.executed:
@@ -109,12 +110,19 @@ def main():
                     print(i)
                 endTimes.append(currentTime + 1)
         if waitingQueue:
-            for All in waitingQueue:
+            j = len(waitingQueue)
+            while j > (0):
+                All = waitingQueue[len(waitingQueue) - j]
+                print("fa3er" ,end="")
+                print(All)
                 if All.nextComesIn == currentTime and currentTime != 0:
+                    j = len(waitingQueue)
                     readyQueue.append(All)
                     waitingQueue.remove(All)
+                    for i in waitingQueue:
+                        print(f"fafa{i}")
                     print(f"process {All.process_id} got into ready queue {currentTime }")
-
+                j -= 1
 
         currentTime += 1
         print(currentTime)
@@ -173,19 +181,6 @@ def main():
     ax.legend()
 
     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
