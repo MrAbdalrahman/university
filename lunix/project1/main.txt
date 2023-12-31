@@ -15,7 +15,7 @@ mkdir project
 
 cd project
 
-echo "loading data"
+echo "loading data..."
 
 #create 13 files a file for each command
 
@@ -82,7 +82,7 @@ echo "data loaded"
 
 
 while true; do
-  echo "1. show all files"
+  echo "1. verfy files"
   echo "2. recommend "
   echo "3. find"
   echo "4. done"
@@ -90,10 +90,29 @@ while true; do
 
   case $userInput in
     1) 
-        for ((i=0;i<numOfCommands;i++))
+
+
+
+    echo "creating file..."
+
+    cd ../
+cat "project/${commands[0]}.txt" > new.txt &
+  for ((i=1;i<numOfCommands;i++)) 
 {
-     cat ${commands[i]}.txt
+
+     cat "project/${commands[i]}.txt" >> new.txt &
 }
+echo "files created successfully"
+echo "verefying files..."
+cmp --silent old.txt new.txt
+if [ $? -eq 0 ]; then
+    echo "your file is up to date."
+else
+    echo "your file needs update:"
+    echo "different lines:"
+    echo $(diff old.txt new.txt | head -n 1)
+fi
+cd project
     ;;
 
     2) 
@@ -105,7 +124,7 @@ while true; do
     
     ;;
     3) 
-    
+ 
         
     read -p "what are you looking for?" c
 
