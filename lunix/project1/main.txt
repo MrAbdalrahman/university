@@ -1,0 +1,126 @@
+#!/bin/bash
+
+
+numOfCommands=20
+commands=(touch mkdir ls tail mv rm rmdir cat head grep stat chmod ps cp date wc diff paste sort tr)
+commands=($(echo "${commands[@]}" | tr ' ' '\n' | sort))
+
+
+
+#mkae a directory for the whole files
+
+mkdir project
+
+
+
+cd project
+
+echo "loading data"
+
+#create 13 files a file for each command
+
+for ((i=0;i<numOfCommands;i++)){ 
+
+if [ ! -e ${commands[i]}.txt ]
+then
+
+touch ${commands[i]}.txt
+
+fi
+}
+
+#descreption:
+for ((i=0;i<numOfCommands;i++))
+{
+    echo "" >> ${commands[i]}.txt
+    echo "---------------------------------------------------------------------------" >> ${commands[i]}.txt
+    echo -e "\e[32m>${commands[i]}\e[0m" > ${commands[i]}.txt
+    echo -e "\e[1;31mDescription:\e[0m" >> ${commands[i]}.txt
+    man ${commands[i]} | awk '/^DESCRIPTION$/,/^$/' | sed -e 's/DESCRIPTION//g'  >> ${commands[i]}.txt
+}
+
+#version
+for ((i=0;i<numOfCommands;i++))
+{
+    echo -e  "\e[1;31mversion:\e[0m" >> ${commands[i]}.txt
+${commands[i]} --version | head -n 1 | grep -oP '([0-9]+[.][0-9]+([.][0-9]+)?)' >> ${commands[i]}.txt 
+}
+
+#kernal version 
+for ((i=0;i<numOfCommands;i++))
+{
+    echo -e  "\e[1;31mkernla Version History\e[0m" >> ${commands[i]}.txt
+    uname -r >> ${commands[i]}.txt
+}
+
+   
+#example
+for ((i=0;i<numOfCommands;i++))
+{
+    echo -e  "\e[1;31mExample\e[0m" >> ${commands[i]}.txt
+    if [ ${commands[i]} == "ps" ] 
+    then
+        ${commands[i]} --help | sed -n '3p' | cut -d ' ' -f 2- | sed -e 's/\[options\]//g' -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g' >> ${commands[i]}.txt 
+                $(${commands[i]} --help | sed -n '3p' | cut -d ' ' -f 2- | sed -e 's/\[options\]//g' -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')  >> ${commands[i]}.txt & 
+
+    else
+    ${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g' >> ${commands[i]}.txt 
+     $(${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')   >> ${commands[i]}.txt 2>&1 &
+    fi
+}
+
+#related commandsd
+for ((i=0;i<numOfCommands;i++))
+{
+    echo -e  "\e[1;31mRelated Commands\e[0m" >> ${commands[i]}.txt
+    compgen -c | grep ${commands[i]} >> ${commands[i]}.txt
+    echo "---------------------------------------------------------------------------" >> ${commands[i]}.txt
+    echo ""  >> ${commands[i]}.txt
+}
+
+echo "data loaded"
+
+
+while true; do
+  echo "1. show all files"
+  echo "2. recommend "
+  echo "3. find"
+  echo "4. done"
+  read -p "choice:" userInput
+
+  case $userInput in
+    1) 
+        for ((i=0;i<numOfCommands;i++))
+{
+     cat ${commands[i]}.txt
+}
+    ;;
+
+    2) 
+    
+    
+  read -p "using command: " c
+
+  echo "suggestion: "$(compgen -c $c)
+    
+    ;;
+    3) 
+    
+        
+    read -p "what are you looking for?" c
+
+    
+    commandFile="$c.txt"
+    if [ -e "$commandFile" ]
+     then    
+        echo -e "\n $commandFile:\n"
+        cat "$commandFile"
+    else
+        echo "sorry i cant find your command :("
+    fi
+    
+    ;;
+    4) echo "thanks for using my program :)" && break;;
+    *) echo "not a valid option";;
+  esac
+done
