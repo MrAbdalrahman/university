@@ -1,5 +1,25 @@
 #!/bin/bash
 
+classify_command() {
+    description=$("$1" --help |awk '/^Usage:/ {p=1; next} p && NF; /^$/ {exit}')
+        
+    if [[ $description == *"text manipulation"* || $description == *"string operations"* || $description == *"working with files"* || $description == *"FILE"* || $description == *"characters"* || $description == *"regular expressions"* || $description == *"data transformation"* || $description == *"text search"* || $description == *"pattern matching"* || $description == *"line editing"* || $description == *"word processing"* || $description == *"file comparison"* || $description == *"text formatting"* || $description == *"sed usage"* || $description == *"awk usage"* || $description == *"text extraction"* || $description == *"text sorting"* || $description == *"string substitution"* ]]
+    then
+        text+=("$1")
+    fi
+        
+    if [[ $description == *"file operations"* || $description == *"directory management"* || $description == *"permissions"* || $description == *"file compression"* || $description == *"move"* || $description == *"DIRECTORY(ies)"* || $description == *"Create"* || $description == *"metadata manipulation"* || $description == *"file linking"* || $description == *"cp"* || $description == *"file searching"* || $description == *"file deletion"* || $description == *"Rename"* || $description == *"file mode"* || $description == *"disk usage"* || $description == *"file permissions"* ]] 
+    then
+        files+=("$1")
+    fi
+        
+    if [[ $description == *"print information"* || $description == *"display output"* || $description == *"formatting output"* || $description == *"terminal formatting"* || $description == *"information retrieval"* || $description == *"system status"* || $description == *"command output"* || $description == *"system"* || $description == *"column manipulation"* || $description == *"pager usage"* || $description == *"system logs"* || $description == *"system monitoring"* || $1 == *"ps"* || $description == *"environment variables"* || $description == *"system configuration"* || $description == *"print to console"* || $description == *"printer output"* ]] 
+    then
+        display+=("$1")
+    fi
+}
+
+
 
 numOfCommands=20
 commands=(touch mkdir ls tail mv rm rmdir cat head grep stat chmod ps cp date wc diff paste sort tr)
@@ -21,12 +41,12 @@ echo "loading data..."
 
 for ((i=0;i<numOfCommands;i++)){ 
 
-if [ ! -e ${commands[i]}.txt ]
-then
+    if [ ! -e ${commands[i]}.txt ]
+    then
 
-touch ${commands[i]}.txt
+        touch ${commands[i]}.txt
 
-fi
+    fi
 }
 
 touch test.txt
@@ -47,7 +67,7 @@ for ((i=0;i<numOfCommands;i++))
 for ((i=0;i<numOfCommands;i++))
 {
     echo -e  "\e[1;31mversion:\e[0m" >> ${commands[i]}.txt
-${commands[i]} --version | head -n 1 | grep -oP '([0-9]+[.][0-9]+([.][0-9]+)?)' >> ${commands[i]}.txt 
+    ${commands[i]} --version | head -n 1 | grep -oP '([0-9]+[.][0-9]+([.][0-9]+)?)' >> ${commands[i]}.txt 
 }
 
 #kernal version 
@@ -65,11 +85,11 @@ for ((i=0;i<numOfCommands;i++))
     if [ ${commands[i]} == "ps" ] 
     then
         ${commands[i]} --help | sed -n '3p' | cut -d ' ' -f 2- | sed -e 's/\[options\]//g' -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g' >> ${commands[i]}.txt 
-                $(${commands[i]} --help | sed -n '3p' | cut -d ' ' -f 2- | sed -e 's/\[options\]//g' -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')  >> ${commands[i]}.txt & 
+        $(${commands[i]} --help | sed -n '3p' | cut -d ' ' -f 2- | sed -e 's/\[options\]//g' -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')  >> ${commands[i]}.txt & 
 
     else
-    ${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g' >> ${commands[i]}.txt 
-     $(${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')   >> ${commands[i]}.txt 2>&1 &
+        ${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g' >> ${commands[i]}.txt 
+        $(${commands[i]} --help | head -n 1 | cut -d ' ' -f 2- | sed -e 's/\[OPTION\]//g' -e 's/ \.\.\./ /g' -e 's/\.\.\./ /g' -e 's/FILES/test.txt test2.txt/g'  -e 's/\(\[FILE\]\|FILE\)/test.txt/g' -e 's/PATTERNS/hello/g' -e 's/DIRECTORY/testDir/g' -e 's/\[-T\]//' -e 's/SOURCE/test.txt/g' -e 's/DEST/\.\.\/ /g' -e 's/MODE\[,MODE\]/+x/g' -e 's/SET1/hello/g' -e 's/\[SET2\]/hi/g' -e 's/\[\(<switches>\)\]//g' -e 's/\[+FORMAT\]//g')   >> ${commands[i]}.txt 2>&1 &
     fi
 }
 
@@ -84,121 +104,156 @@ for ((i=0;i<numOfCommands;i++))
 
 echo "data loaded"
 
-classify_command() {
-    command_name=$1
-
-    if man "$command_name" &> /dev/null; then
-        description=$(man "$command_name" | awk '/^DESCRIPTION/,/^OPTIONS/' | grep -v '^OPTIONS')
-        
-        if [[ $description == *"text manipulation"* || $description == *"string operations"* || $description == *"working with files"* || $description == *"FILE"* || $description == *"characters"* || $description == *"regular expressions"* || $description == *"data transformation"* || $description == *"text search"* || $description == *"pattern matching"* || $description == *"line editing"* || $description == *"word processing"* || $description == *"file comparison"* || $description == *"text formatting"* || $description == *"sed usage"* || $description == *"awk usage"* || $description == *"text extraction"* || $description == *"text sorting"* || $description == *"string substitution"* ]]; then
-            text+=("$command_name")
-        
-        if [[ $description == *"file operations"* || $description == *"directory management"* || $description == *"permissions"* || $description == *"file compression"* || $description == *"move"* || $description == *"disk management"* || $description == *"Create the DIRECTORY"* || $description == *"metadata manipulation"* || $description == *"file linking"* || $description == *"file copying"* || $description == *"file searching"* || $description == *"file deletion"* || $description == *"Rename"* || $description == *"file mode"* || $description == *"disk usage"* || $description == *"file permissions"* ]]; then
-            files+=("$command_name")
-        fi
-        
-        elif [[ $description == *"print information"* || $description == *"display output"* || $description == *"formatting output"* || $description == *"terminal formatting"* || $description == *"information retrieval"* || $description == *"system status"* || $description == *"command output"* || $description == *"tabular data formatting"* || $description == *"column manipulation"* || $description == *"pager usage"* || $description == *"system logs"* || $description == *"system monitoring"* || $description == *"process status"* || $description == *"environment variables"* || $description == *"system configuration"* || $description == *"print to console"* || $description == *"printer output"* ]]; then
-            display+=("$command_name")
-        fi
-    fi
-}
-
-
-
-while true; do
-  echo "1. verfy files"
-  echo "2. recommend "
-  echo "3. find"
-  echo "4. done"
-  read -p "choice:" userInput
-
-  case $userInput in
-    1) 
-
-
-
-    echo "creating file..."
-
-    cd ../
-cat "project/${commands[0]}.txt" > new.txt &
-  for ((i=1;i<numOfCommands;i++)) 
-{
-
-     cat "project/${commands[i]}.txt" >> new.txt &
-}
-echo "files created successfully"
-echo "verefying files..."
-cmp --silent old.txt new.txt
-if [ $? -eq 0 ]; then
-    echo "your file is up to date."
-else
-    echo "your file needs update:"
-    echo "different lines:"
-    echo $(diff old.txt new.txt | head -n 1)
-fi
-cd project
-    ;;
-
-    2) 
-    
-    echo "classifying commands..."
+echo "classifying commands..."
 
 text=()
 files=()
 display=()
 flag=1
 
-for command in "${commands[@]}"; do
+for command in "${commands[@]}" 
+do
     classify_command "$command"
 done
 
-    echo "all commands classified successsfully"
-    
-  read -p "using command: " input
+echo "all commands classified successsfully"
 
- if [[ " ${text[@]} " =~ " $input " ]]; then
-    related_list+=("${text[@]}")
-    flag=0
-fi
-if [[ " ${files[@]} " =~ " $input " ]]; then
-    related_list+=("${ciles[@]}")
-    flag=0
-fi
-if [[ " ${display[@]} " =~ " $input " ]]; then
-    related_list+=("${display[@]}")
-    flag=0
-fi
-if [ $flag -eq 1 ]; then
-    echo "Command: '$input' not found."
-fi
-    if [ $flag -eq 0 ]; then
-    echo "recommendations: "
-for command in "${related_list[@]}"; do
-    if [[ "$command" != "$user_command" ]]; then
-        echo "$command"
-    fi
-done
-fi
+while true
+do
+  echo "1. verfy files"
+  echo "2. recommend "
+  echo "3. find command"
+  echo "4. find content"
+  echo "5. done"
+  read -p "choice:" userInput
 
+  case $userInput in
+    1) 
+        echo "creating file..."
 
-    ;;
-    3) 
- 
-        
-    read -p "what are you looking for?" c
+        cd ../
+        cat "project/${commands[0]}.txt" > new.txt &
+        for ((i=1;i<numOfCommands;i++)) 
+        {
 
-    
-    commandFile="$c.txt"
-    if [ -e "$commandFile" ]
-     then    
-        echo -e "\n $commandFile:\n"
-        cat "$commandFile"
+            cat "project/${commands[i]}.txt" >> new.txt &
+        }
+    echo "files created successfully"
+    echo "verefying files..."
+    cmp --silent old.txt new.txt
+    if [ $? -eq 0 ] 
+    then
+        echo "your file is up to date."
     else
-        echo "sorry i cant find your command :("
+        echo "your file needs update:"
+        echo "different lines:"
+        echo $(diff old.txt new.txt | head -n 1)
     fi
+    cd project
+    ;;
+
+    2) 
+    
+    read -p "using command: " input
+    related_list=()
+
+    if [[ " ${text[@]} " =~ " $input " ]]
+    then
+        related_list+=("${text[@]}")
+        flag=0
+    fi
+    if [[ " ${files[@]} " =~ " $input " ]] 
+    then
+        related_list+=("${files[@]}")
+        flag=0
+    fi
+    if [[ " ${display[@]} " =~ " $input " ]] 
+    then
+        related_list+=("${display[@]}")
+        flag=0
+    fi
+    if [ $flag -eq 1 ]
+    then
+        echo "Command: '$input' not found."
+    fi
+    if [ $flag -eq 0 ]
+    then
+    echo "recommendations: "
+        for command in "${related_list[@]}" 
+        do
+            if [[ "$command" != "$user_command" ]] 
+            then
+                echo "$command"
+            fi
+        done
+
+        while true
+        do
+            read -p "Enter your choice (first-0) (or 'q' to quit): " in
+
+            if [[ "$in" == "q" || "$in" == "Q" ]]
+            then
+                echo "Quitting..."
+                break
+            fi
+            if ! [[ $in =~ ^[0-9]+$ ]]
+            then
+                echo " invalid input (numbers or [qQ] are only valid)"
+            elif (($in >= 0 && $in <= ${#related_list[@]})); then
+                chosen_option=${related_list[$in]}
+                echo "gettinjg file.."
+                echo "printing file.."
+                echo ""
+                echo ""
+                cat "$chosen_option.txt"
+                break
+            else
+                echo "please enter a valid number."
+            fi
+        done
+    fi
+        
+    ;;
+    3)    
+        read -p "what command are you looking for?" c
+
+    
+        commandFile="$c.txt"
+        if [ -e "$commandFile" ]
+        then    
+            echo -e "\n $commandFile:\n"
+            cat "$commandFile"
+        else
+            echo "sorry i cant find your command :("
+        fi
     
     ;;
-    4) echo "thanks for using my program :)" && break;;
-    *) echo "not a valid option";;
+    4)
+  
+        read -p " what would you like to see?: " lookFor
+        result=$(grep -i "$lookFor" "new.txt")
+        if [ -z "$result" ]; then
+            echo "no matchings."
+        else
+            echo "matchings found:"
+            echo "$result"
+        fi
+    ;;
+    5) 
+        read -p "Do you want to provide feedback? (yes/no): " feedbackChoice
+        if [[ "$feedbackChoice" == "yes" || "$feedbackChoice" == "Yes" ]]; then
+            read -p "Please enter your feedback: " feedback
+            echo "$feedback" >> feedback.txt
+            echo "Thank you for your feedback! your feedback will be reviewed asap."
+        else
+            echo " Thank you for using our system!"
+fi
+                
+        break;;
+
+
+    *) 
+    
+        echo "not a valid option";;
   esac
 done
