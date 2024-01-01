@@ -229,9 +229,14 @@ do
     
     ;;
     4)
-  
+        file="new.txt"
+        if [ ! -e "new.txt" ]
+        then
+            file="old.txt"
+        fi
+
         read -p " what would you like to see?: " lookFor
-        result=$(grep -i "$lookFor" "new.txt")
+        result=$(grep -i "$lookFor" "$file")
         if [ -z "$result" ]; then
             echo "no matchings."
         else
