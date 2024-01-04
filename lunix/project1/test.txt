@@ -118,6 +118,13 @@ done
 
 echo "all commands classified successsfully"
 
+is_subword() {
+    local string="$1"
+    local subword="$2"
+    [[ ${string,,} =~ ${subword,,} ]] && return 0 || return 1
+}
+
+
 while true
 do
   echo "1. verfy files"
@@ -125,6 +132,7 @@ do
   echo "3. find command"
   echo "4. find content"
   echo "5. done"
+  echo "6. clear terminal"
   read -p "choice:" userInput
 
   case $userInput in
@@ -199,7 +207,8 @@ do
             if ! [[ $in =~ ^[0-9]+$ ]]
             then
                 echo " invalid input (numbers or [qQ] are only valid)"
-            elif (($in >= 0 && $in <= ${#related_list[@]})); then
+            elif (($in >= 0 && $in <= ${#related_list[@]})) 
+            then
                 chosen_option=${related_list[$in]}
                 echo "gettinjg file.."
                 echo "printing file.."
@@ -229,20 +238,35 @@ do
     
     ;;
     4)
-        file="new.txt"
-        if [ ! -e "new.txt" ]
-        then
-            file="old.txt"
-        fi
+        read -p "What would you like to see?: " lookFor
+        flaag=1
 
-        read -p " what would you like to see?: " lookFor
-        result=$(grep -i "$lookFor" "$file")
-        if [ -z "$result" ]; then
-            echo "no matchings."
-        else
-            echo "matchings found:"
-            echo "$result"
-        fi
+
+for command in "${commands[@]}"; do
+    if [ -e "$command.txt" ]; then
+        while IFS= read -r line; do
+            if is_subword "$line" "$lookFor"; then
+                for ((i = -3; i <= 0; i++)); do
+                    if [ $((lineNumber + i)) -ge 1 ]; then
+                        sed -n "$((lineNumber + i))p" "$command.txt"
+                    fi
+                done
+                echo "results:"
+                echo
+                echo "$line"
+                for ((i = 1; i <= 3; i++)); do
+                    sed -n "$((lineNumber + i))p" "$command.txt"
+                done
+            fi
+            ((lineNumber++))
+        done < "$command.txt"
+        lineNumber=1
+    fi
+done
+
+if [ $flag -eq 1 ]; then
+    echo "No matchings found in any file."
+fi
     ;;
     5) 
         read -p "Do you want to provide feedback? (yes/no): " feedbackChoice
@@ -256,7 +280,10 @@ fi
                 
         break;;
 
+    6)
 
+    clear
+    ;;
     *) 
     
         echo "not a valid option";;
