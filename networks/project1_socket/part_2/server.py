@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-dataBase = ["1211753", "1222500", "12126771"]
+dataBase = ["1211753", "1222500", "1212677"] 
 PORT = 9955  # using port 9955
 FORMAT = "utf-8"  # format used for our messages decoding
 HEADER = 64
@@ -57,7 +57,7 @@ def start():
         conn, addr = server.accept()  # obtaining connection and ip address
         clients.append(conn)  # appending connections
         thread = threading.Thread(target=client, args=(conn, addr, clients))
-        thread.start()
+        thread.start() 
 
 
 print("The Server Is Starting")
