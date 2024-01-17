@@ -1,0 +1,1 @@
+run keil of study1 and study2 befor simulating the program
