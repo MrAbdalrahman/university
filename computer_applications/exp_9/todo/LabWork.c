@@ -69,7 +69,7 @@ void LCD_Command1(char command1)
 void LCD_Data(char data)
 {
  int Temp;
- IO1CLR = CLR; /* Clearing the port pins */
+ IO1CLR = CLR; 
  IO1SET = EN; /* Enable pin high */
  IO1SET = RS; /* RS=1 for data register */
  IO1CLR = RW; /* R/W=0 for write */
