@@ -1,5 +1,5 @@
 import csv  # to get the code to read .csv
-
+import sys  # to exit on custom status code
 N = 10  # number of processes
 M = 5  # number of types of resources
 
@@ -73,7 +73,10 @@ for v in isValid:
     if v:
         print(f" {filesNames[counter]} is valid")
     else:
-        print(f" {filesNames[counter]} is invalid")
+        print(f" {filesNames[counter]} is invalid. to continue, all files must be valid check your files and check M,"
+              f"N values")
+        sys.exit(1211753)
+
     counter += 1
 
 # 2- Detect whether or not there is a deadlock condition.
@@ -172,4 +175,4 @@ else:
     print(executions)
 print("---------------------------------------------------")
 print()
-print("Process finished with exit code 0")
+sys.exit(0)
