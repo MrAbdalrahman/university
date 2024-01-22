@@ -1,0 +1,9 @@
+help
+print
+list
+dict
+int
+str
+max
+min
+map

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<CommandManual>
+  <description>Help on built-in function min in module builtins:
+
+min(...)
+    min(iterable, *[, default=obj, key=func]) -&gt; value
+    min(arg1, arg2, *args, *[, key=func]) -&gt; value
+    
+    With a single iterable argument, return its smallest item. The
+    default keyword-only argument specifies an object to return if
+    the provided iterable is empty.
+    With two or more arguments, return the smallest argument.
+
+</description>
+  <version>Python 3.11.2</version>
+  <example>No example available.</example>
+  <related_commands>iter, def</related_commands>
+  <syntax>min(...)
+ min(iterable, *[, default=obj, key=func]) -&gt; value
+ min(arg1, arg2, *args, *[, key=func]) -&gt; value</syntax>
+  <documentation_link>https://docs.python.org/3/</documentation_link>
+</CommandManual>
