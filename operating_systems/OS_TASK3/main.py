@@ -111,42 +111,44 @@ canGrant = True
 i = 0
 executions = []
 while i < N:
-    print(f"{counter})")
-    print(f"process: {i}")
-    print(f"finish:{finish}")
     if not finish[i]:
-
-        print(f"request: {request[i][1]}")
+        print(f"{counter + 1})")
+        print(f"{allocation[i][0]}")
+        print(f"finish:{finish}")
         print(f"work: {work}")
-        for j in range(M):
-            if request[i][1][j] > work[j]:
-                canGrant = False
-                break
-    if canGrant:
-        print("granted")
+        print(f"request: {request[i][1]}")
+        print(f"allocation : {allocation[i][1]}")
+        if not finish[i]:
+            for j in range(M):
+                if request[i][1][j] > work[j]:
+                    canGrant = False
+                    break
+        if canGrant :
+            print("granted")
+        else:
+            print("not granted")
+
+        if canGrant :
+            # 3-
+            for j in range(M):
+                work[j] = work[j] + allocation[i][1][j]
+            finish[i] = True
+            executions.append(allocation[i][0])
+            t = 0
+            for t in range(N):
+                if not finish[t]:
+                    break
+            i = t - 1
+
+        canGrant = True
+        i += 1
+        print()
+        counter += 1
+        if all(finish):
+            print("finished execution")
+            break
     else:
-        print("not granted")
-
-    if canGrant:
-        # 3-
-        for j in range(M):
-            work[j] = work[j] + allocation[i][1][j]
-        finish[i] = True
-        executions.append(allocation[i][0])
-
-        t = 0
-        for t in range(N):
-            if not finish[t]:
-                break
-        i = t - 1
-
-    canGrant = True
-    i += 1
-    print()
-    counter += 1
-    if all(finish):
-        print("finished execution")
-        break
+        i+=1
 print("--------------------------------------------------------------------------------")
 print()
 
