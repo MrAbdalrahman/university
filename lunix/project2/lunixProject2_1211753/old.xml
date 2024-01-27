@@ -1,5 +1,33 @@
 <?xml version="1.0" ?>
 <AllCommandManuals>
+  <CommandManual name="abs">
+    <description>Help on built-in function abs in module builtins:
+
+abs(x, /)
+    Return the absolute value of the argument.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands/>
+    <syntax>abs(x, /)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#abs</documentation_link>
+  </CommandManual>
+  <CommandManual name="all">
+    <description>Help on built-in function all in module builtins:
+
+all(iterable, /)
+    Return True if bool(x) is True for all values x in the iterable.
+
+    If the iterable is empty, return True.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>iter</related_commands>
+    <syntax>all(iterable, /)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#all</documentation_link>
+  </CommandManual>
   <CommandManual name="dict">
     <description>Help on class dict in module builtins:
 
@@ -13,176 +41,265 @@ class dict(object)
  |          d[k] = v
  |  dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
  |      in the keyword argument list.  For example:  dict(one=1, two=2)
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __contains__(self, key, /)
  |      True if the dictionary has the specified key, else False.
- |  
+ |
  |  __delitem__(self, key, /)
  |      Delete self[key].
- |  
+ |
  |  __eq__(self, value, /)
  |      Return self==value.
- |  
+ |
  |  __ge__(self, value, /)
  |      Return self&gt;=value.
- |  
+ |
  |  __getattribute__(self, name, /)
  |      Return getattr(self, name).
- |  
+ |
  |  __getitem__(...)
  |      x.__getitem__(y) &lt;==&gt; x[y]
- |  
+ |
  |  __gt__(self, value, /)
  |      Return self&gt;value.
- |  
+ |
  |  __init__(self, /, *args, **kwargs)
  |      Initialize self.  See help(type(self)) for accurate signature.
- |  
+ |
  |  __ior__(self, value, /)
  |      Return self|=value.
- |  
+ |
  |  __iter__(self, /)
  |      Implement iter(self).
- |  
+ |
  |  __le__(self, value, /)
  |      Return self&lt;=value.
- |  
+ |
  |  __len__(self, /)
  |      Return len(self).
- |  
+ |
  |  __lt__(self, value, /)
  |      Return self&lt;value.
- |  
+ |
  |  __ne__(self, value, /)
  |      Return self!=value.
- |  
+ |
  |  __or__(self, value, /)
  |      Return self|value.
- |  
+ |
  |  __repr__(self, /)
  |      Return repr(self).
- |  
+ |
  |  __reversed__(self, /)
  |      Return a reverse iterator over the dict keys.
- |  
+ |
  |  __ror__(self, value, /)
  |      Return value|self.
- |  
+ |
  |  __setitem__(self, key, value, /)
  |      Set self[key] to value.
- |  
+ |
  |  __sizeof__(...)
  |      D.__sizeof__() -&gt; size of D in memory, in bytes
- |  
+ |
  |  clear(...)
  |      D.clear() -&gt; None.  Remove all items from D.
- |  
+ |
  |  copy(...)
  |      D.copy() -&gt; a shallow copy of D
- |  
+ |
  |  get(self, key, default=None, /)
  |      Return the value for key if key is in the dictionary, else default.
- |  
+ |
  |  items(...)
  |      D.items() -&gt; a set-like object providing a view on D's items
- |  
+ |
  |  keys(...)
  |      D.keys() -&gt; a set-like object providing a view on D's keys
- |  
+ |
  |  pop(...)
  |      D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
- |      
+ |
  |      If the key is not found, return the default if given; otherwise,
  |      raise a KeyError.
- |  
+ |
  |  popitem(self, /)
  |      Remove and return a (key, value) pair as a 2-tuple.
- |      
+ |
  |      Pairs are returned in LIFO (last-in, first-out) order.
  |      Raises KeyError if the dict is empty.
- |  
+ |
  |  setdefault(self, key, default=None, /)
  |      Insert key with a value of default if key is not in the dictionary.
- |      
+ |
  |      Return the value for key if key is in the dictionary, else default.
- |  
+ |
  |  update(...)
  |      D.update([E, ]**F) -&gt; None.  Update D from dict/iterable E and F.
  |      If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
  |      If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
  |      In either case, this is followed by: for k in F:  D[k] = F[k]
- |  
+ |
  |  values(...)
  |      D.values() -&gt; an object providing a view on D's values
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Class methods defined here:
- |  
+ |
  |  __class_getitem__(...) from builtins.type
  |      See PEP 585
- |  
+ |
  |  fromkeys(iterable, value=None, /) from builtins.type
  |      Create a new dictionary with keys from iterable and values set to value.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Static methods defined here:
- |  
+ |
  |  __new__(*args, **kwargs) from builtins.type
  |      Create and return a new object.  See help(type) for accurate signature.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Data and other attributes defined here:
- |  
+ |
  |  __hash__ = None
 
 </description>
     <version>Python 3.11.2</version>
     <example>dict([(1, 'one'), (2, 'two')])</example>
-    <related_commands>reversed, iter, type, map, ge, class, pop, eq, self, with, del, raise, contains, list, getattribute, delitem, len, remove, set, from, tuple, def</related_commands>
+    <related_commands>list, len, self, reversed, class, delitem, def, remove, getattribute, map, eq, ge, type, contains, from, with, tuple, pop, iter, raise, set, del</related_commands>
     <syntax>class dict(object)
  |  dict() -&gt; new empty dictionary
  |  dict(mapping) -&gt; new dictionary initialized from a mapping object's
  |  dict(iterable) -&gt; new dictionary initialized as if via:
  |  dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/stdtypes.html#dict</documentation_link>
+  </CommandManual>
+  <CommandManual name="enumerate">
+    <description>Help on class enumerate in module builtins:
+
+class enumerate(object)
+ |  enumerate(iterable, start=0)
+ |
+ |  Return an enumerate object.
+ |
+ |    iterable
+ |      an object supporting iteration
+ |
+ |  The enumerate object yields pairs containing a count (from start, which
+ |  defaults to zero) and a value yielded by the iterable argument.
+ |
+ |  enumerate is useful for obtaining an indexed list:
+ |      (0, seq[0]), (1, seq[1]), (2, seq[2]), ...
+ |
+ |  Methods defined here:
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __next__(self, /)
+ |      Implement next(self).
+ |
+ |  __reduce__(...)
+ |      Return state information for pickling.
+ |
+ |  ----------------------------------------------------------------------
+ |  Class methods defined here:
+ |
+ |  __class_getitem__(...) from builtins.type
+ |      See PEP 585
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>list, yield, self, iter, eq, class, def, ge, from, type, format, getattribute</related_commands>
+    <syntax>class enumerate(object)
+ |  enumerate(iterable, start=0)
+ |  enumerate is useful for obtaining an indexed list:</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#enumerate</documentation_link>
+  </CommandManual>
+  <CommandManual name="filter">
+    <description>Help on class filter in module builtins:
+
+class filter(object)
+ |  filter(function or None, iterable) --&gt; filter object
+ |
+ |  Return an iterator yielding those items of iterable for which function(item)
+ |  is true. If function is None, return the items that are true.
+ |
+ |  Methods defined here:
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __next__(self, /)
+ |      Implement next(self).
+ |
+ |  __reduce__(...)
+ |      Return state information for pickling.
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>yield, self, iter, class, def, ge, from, type, format, getattribute</related_commands>
+    <syntax>class filter(object)
+ |  filter(function or None, iterable) --&gt; filter object</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#filter</documentation_link>
   </CommandManual>
   <CommandManual name="help">
     <description>Help on _Helper in module _sitebuiltins object:
 
 help = class _Helper(builtins.object)
  |  Define the builtin 'help'.
- |  
+ |
  |  This is a wrapper around pydoc.help that provides a helpful message
  |  when 'help' is typed at the Python interactive prompt.
- |  
+ |
  |  Calling help() at the Python prompt starts an interactive help session.
  |  Calling help(thing) prints help for the python object 'thing'.
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __call__(self, *args, **kwds)
  |      Call self as a function.
- |  
+ |
  |  __repr__(self)
  |      Return repr(self).
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Data descriptors defined here:
- |  
+ |
  |  __dict__
  |      dictionary for instance variables (if defined)
- |  
+ |
  |  __weakref__
  |      list of weak references to the object (if defined)
 
 </description>
     <version>Python 3.11.2</version>
     <example>No example available.</example>
-    <related_commands>ge, list, dict, self, round, def, type, int, class, print</related_commands>
+    <related_commands>list, type, dict, self, print, class, round, def, ge, int</related_commands>
     <syntax>help = class _Helper(builtins.object)</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#help</documentation_link>
   </CommandManual>
   <CommandManual name="int">
     <description>Help on class int in module builtins:
@@ -190,11 +307,11 @@ help = class _Helper(builtins.object)
 class int(object)
  |  int([x]) -&gt; integer
  |  int(x, base=10) -&gt; integer
- |  
+ |
  |  Convert a number or string to an integer, or return 0 if no arguments
  |  are given.  If x is a number, return x.__int__().  For floating point
  |  numbers, this truncates towards zero.
- |  
+ |
  |  If x is not a number or if base is given, then x must be a string,
  |  bytes, or bytearray instance representing an integer literal in the
  |  given base.  The literal can be preceded by '+' or '-' and be surrounded
@@ -202,200 +319,200 @@ class int(object)
  |  Base 0 means to interpret the base from the string as an integer literal.
  |  &gt;&gt;&gt; int('0b100', base=0)
  |  4
- |  
+ |
  |  Built-in subclasses:
  |      bool
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __abs__(self, /)
  |      abs(self)
- |  
+ |
  |  __add__(self, value, /)
  |      Return self+value.
- |  
+ |
  |  __and__(self, value, /)
  |      Return self&amp;value.
- |  
+ |
  |  __bool__(self, /)
  |      True if self else False
- |  
+ |
  |  __ceil__(...)
  |      Ceiling of an Integral returns itself.
- |  
+ |
  |  __divmod__(self, value, /)
  |      Return divmod(self, value).
- |  
+ |
  |  __eq__(self, value, /)
  |      Return self==value.
- |  
+ |
  |  __float__(self, /)
  |      float(self)
- |  
+ |
  |  __floor__(...)
  |      Flooring an Integral returns itself.
- |  
+ |
  |  __floordiv__(self, value, /)
  |      Return self//value.
- |  
+ |
  |  __format__(self, format_spec, /)
  |      Default object formatter.
- |  
+ |
  |  __ge__(self, value, /)
  |      Return self&gt;=value.
- |  
+ |
  |  __getattribute__(self, name, /)
  |      Return getattr(self, name).
- |  
+ |
  |  __getnewargs__(self, /)
- |  
+ |
  |  __gt__(self, value, /)
  |      Return self&gt;value.
- |  
+ |
  |  __hash__(self, /)
  |      Return hash(self).
- |  
+ |
  |  __index__(self, /)
  |      Return self converted to an integer, if self is suitable for use as an index into a list.
- |  
+ |
  |  __int__(self, /)
  |      int(self)
- |  
+ |
  |  __invert__(self, /)
  |      ~self
- |  
+ |
  |  __le__(self, value, /)
  |      Return self&lt;=value.
- |  
+ |
  |  __lshift__(self, value, /)
  |      Return self&lt;&lt;value.
- |  
+ |
  |  __lt__(self, value, /)
  |      Return self&lt;value.
- |  
+ |
  |  __mod__(self, value, /)
  |      Return self%value.
- |  
+ |
  |  __mul__(self, value, /)
  |      Return self*value.
- |  
+ |
  |  __ne__(self, value, /)
  |      Return self!=value.
- |  
+ |
  |  __neg__(self, /)
  |      -self
- |  
+ |
  |  __or__(self, value, /)
  |      Return self|value.
- |  
+ |
  |  __pos__(self, /)
  |      +self
- |  
+ |
  |  __pow__(self, value, mod=None, /)
  |      Return pow(self, value, mod).
- |  
+ |
  |  __radd__(self, value, /)
  |      Return value+self.
- |  
+ |
  |  __rand__(self, value, /)
  |      Return value&amp;self.
- |  
+ |
  |  __rdivmod__(self, value, /)
  |      Return divmod(value, self).
- |  
+ |
  |  __repr__(self, /)
  |      Return repr(self).
- |  
+ |
  |  __rfloordiv__(self, value, /)
  |      Return value//self.
- |  
+ |
  |  __rlshift__(self, value, /)
  |      Return value&lt;&lt;self.
- |  
+ |
  |  __rmod__(self, value, /)
  |      Return value%self.
- |  
+ |
  |  __rmul__(self, value, /)
  |      Return value*self.
- |  
+ |
  |  __ror__(self, value, /)
  |      Return value|self.
- |  
+ |
  |  __round__(...)
  |      Rounding an Integral returns itself.
- |      
+ |
  |      Rounding with an ndigits argument also returns an integer.
- |  
+ |
  |  __rpow__(self, value, mod=None, /)
  |      Return pow(value, self, mod).
- |  
+ |
  |  __rrshift__(self, value, /)
  |      Return value&gt;&gt;self.
- |  
+ |
  |  __rshift__(self, value, /)
  |      Return self&gt;&gt;value.
- |  
+ |
  |  __rsub__(self, value, /)
  |      Return value-self.
- |  
+ |
  |  __rtruediv__(self, value, /)
  |      Return value/self.
- |  
+ |
  |  __rxor__(self, value, /)
  |      Return value^self.
- |  
+ |
  |  __sizeof__(self, /)
  |      Returns size in memory, in bytes.
- |  
+ |
  |  __sub__(self, value, /)
  |      Return self-value.
- |  
+ |
  |  __truediv__(self, value, /)
  |      Return self/value.
- |  
+ |
  |  __trunc__(...)
  |      Truncating an Integral returns itself.
- |  
+ |
  |  __xor__(self, value, /)
  |      Return self^value.
- |  
+ |
  |  as_integer_ratio(self, /)
  |      Return integer ratio.
- |      
+ |
  |      Return a pair of integers, whose ratio is exactly equal to the original int
  |      and with a positive denominator.
- |      
+ |
  |      &gt;&gt;&gt; (10).as_integer_ratio()
  |      (10, 1)
  |      &gt;&gt;&gt; (-10).as_integer_ratio()
  |      (-10, 1)
  |      &gt;&gt;&gt; (0).as_integer_ratio()
  |      (0, 1)
- |  
+ |
  |  bit_count(self, /)
  |      Number of ones in the binary representation of the absolute value of self.
- |      
+ |
  |      Also known as the population count.
- |      
+ |
  |      &gt;&gt;&gt; bin(13)
  |      '0b1101'
  |      &gt;&gt;&gt; (13).bit_count()
  |      3
- |  
+ |
  |  bit_length(self, /)
  |      Number of bits necessary to represent self in binary.
- |      
+ |
  |      &gt;&gt;&gt; bin(37)
  |      '0b100101'
  |      &gt;&gt;&gt; (37).bit_length()
  |      6
- |  
+ |
  |  conjugate(...)
  |      Returns self, the complex conjugate of any int.
- |  
+ |
  |  to_bytes(self, /, length=1, byteorder='big', *, signed=False)
  |      Return an array of bytes representing an integer.
- |      
+ |
  |      length
  |        Length of bytes object to use.  An OverflowError is raised if the
  |        integer is not representable with the given number of bytes.  Default
@@ -410,13 +527,13 @@ class int(object)
  |        Determines whether two's complement is used to represent the integer.
  |        If signed is False and a negative integer is given, an OverflowError
  |        is raised.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Class methods defined here:
- |  
+ |
  |  from_bytes(bytes, byteorder='big', *, signed=False) from builtins.type
  |      Return the integer represented by the given array of bytes.
- |      
+ |
  |      bytes
  |        Holds the array of bytes to convert.  The argument must either
  |        support the buffer protocol or be an iterable object producing bytes.
@@ -430,225 +547,238 @@ class int(object)
  |        `sys.byteorder' as the byte order value.  Default is to use 'big'.
  |      signed
  |        Indicates whether two's complement is used to represent the integer.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Static methods defined here:
- |  
+ |
  |  __new__(*args, **kwargs) from builtins.type
  |      Create and return a new object.  See help(type) for accurate signature.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Data descriptors defined here:
- |  
+ |
  |  denominator
  |      the denominator of a rational number in lowest terms
- |  
+ |
  |  imag
  |      the imaginary part of a complex number
- |  
+ |
  |  numerator
  |      the numerator of a rational number in lowest terms
- |  
+ |
  |  real
  |      the real part of a complex number
 
 </description>
     <version>Python 3.11.2</version>
     <example>int('10')</example>
-    <related_commands>format, min, iter, add, round, type, ge, abs, pop, class, float, eq, self, with, pow, str, raise, list, getattribute, len, from, def</related_commands>
+    <related_commands>list, len, self, class, round, def, getattribute, add, str, eq, float, ge, min, type, from, format, with, pop, abs, iter, raise, pow</related_commands>
     <syntax>class int(object)
  |  int([x]) -&gt; integer
  |  int(x, base=10) -&gt; integer
  |      int(self)</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#int</documentation_link>
+  </CommandManual>
+  <CommandManual name="len">
+    <description>Help on built-in function len in module builtins:
+
+len(obj, /)
+    Return the number of items in a container.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>len('Hello')</example>
+    <related_commands/>
+    <syntax>len(obj, /)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#len</documentation_link>
   </CommandManual>
   <CommandManual name="list">
     <description>Help on class list in module builtins:
 
 class list(object)
  |  list(iterable=(), /)
- |  
+ |
  |  Built-in mutable sequence.
- |  
+ |
  |  If no argument is given, the constructor creates a new empty list.
  |  The argument must be an iterable if specified.
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __add__(self, value, /)
  |      Return self+value.
- |  
+ |
  |  __contains__(self, key, /)
  |      Return key in self.
- |  
+ |
  |  __delitem__(self, key, /)
  |      Delete self[key].
- |  
+ |
  |  __eq__(self, value, /)
  |      Return self==value.
- |  
+ |
  |  __ge__(self, value, /)
  |      Return self&gt;=value.
- |  
+ |
  |  __getattribute__(self, name, /)
  |      Return getattr(self, name).
- |  
+ |
  |  __getitem__(...)
  |      x.__getitem__(y) &lt;==&gt; x[y]
- |  
+ |
  |  __gt__(self, value, /)
  |      Return self&gt;value.
- |  
+ |
  |  __iadd__(self, value, /)
  |      Implement self+=value.
- |  
+ |
  |  __imul__(self, value, /)
  |      Implement self*=value.
- |  
+ |
  |  __init__(self, /, *args, **kwargs)
  |      Initialize self.  See help(type(self)) for accurate signature.
- |  
+ |
  |  __iter__(self, /)
  |      Implement iter(self).
- |  
+ |
  |  __le__(self, value, /)
  |      Return self&lt;=value.
- |  
+ |
  |  __len__(self, /)
  |      Return len(self).
- |  
+ |
  |  __lt__(self, value, /)
  |      Return self&lt;value.
- |  
+ |
  |  __mul__(self, value, /)
  |      Return self*value.
- |  
+ |
  |  __ne__(self, value, /)
  |      Return self!=value.
- |  
+ |
  |  __repr__(self, /)
  |      Return repr(self).
- |  
+ |
  |  __reversed__(self, /)
  |      Return a reverse iterator over the list.
- |  
+ |
  |  __rmul__(self, value, /)
  |      Return value*self.
- |  
+ |
  |  __setitem__(self, key, value, /)
  |      Set self[key] to value.
- |  
+ |
  |  __sizeof__(self, /)
  |      Return the size of the list in memory, in bytes.
- |  
+ |
  |  append(self, object, /)
  |      Append object to the end of the list.
- |  
+ |
  |  clear(self, /)
  |      Remove all items from list.
- |  
+ |
  |  copy(self, /)
  |      Return a shallow copy of the list.
- |  
+ |
  |  count(self, value, /)
  |      Return number of occurrences of value.
- |  
+ |
  |  extend(self, iterable, /)
  |      Extend list by appending elements from the iterable.
- |  
+ |
  |  index(self, value, start=0, stop=9223372036854775807, /)
  |      Return first index of value.
- |      
+ |
  |      Raises ValueError if the value is not present.
- |  
+ |
  |  insert(self, index, object, /)
  |      Insert object before index.
- |  
+ |
  |  pop(self, index=-1, /)
  |      Remove and return item at index (default last).
- |      
+ |
  |      Raises IndexError if list is empty or index is out of range.
- |  
+ |
  |  remove(self, value, /)
  |      Remove first occurrence of value.
- |      
+ |
  |      Raises ValueError if the value is not present.
- |  
+ |
  |  reverse(self, /)
  |      Reverse *IN PLACE*.
- |  
+ |
  |  sort(self, /, *, key=None, reverse=False)
  |      Sort the list in ascending order and return None.
- |      
+ |
  |      The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
  |      order of two equal elements is maintained).
- |      
+ |
  |      If a key function is given, apply it once to each list item and sort them,
  |      ascending or descending, according to their function values.
- |      
+ |
  |      The reverse flag can be set to sort in descending order.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Class methods defined here:
- |  
+ |
  |  __class_getitem__(...) from builtins.type
  |      See PEP 585
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Static methods defined here:
- |  
+ |
  |  __new__(*args, **kwargs) from builtins.type
  |      Create and return a new object.  See help(type) for accurate signature.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Data and other attributes defined here:
- |  
+ |
  |  __hash__ = None
 
 </description>
     <version>Python 3.11.2</version>
     <example>list([1, 2, 3])</example>
-    <related_commands>reversed, iter, sort, add, range, extend, type, int, ge, class, pop, eq, self, str, del, append, contains, getattribute, delitem, len, remove, set, from, def</related_commands>
+    <related_commands>len, self, reversed, extend, class, delitem, def, append, remove, getattribute, sort, add, str, eq, ge, type, int, range, contains, from, pop, iter, set, del</related_commands>
     <syntax>class list(object)
  |  list(iterable=(), /)</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/stdtypes.html#list</documentation_link>
   </CommandManual>
   <CommandManual name="map">
     <description>Help on class map in module builtins:
 
 class map(object)
  |  map(func, *iterables) --&gt; map object
- |  
+ |
  |  Make an iterator that computes the function using arguments from
  |  each of the iterables.  Stops when the shortest iterable is exhausted.
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __getattribute__(self, name, /)
  |      Return getattr(self, name).
- |  
+ |
  |  __iter__(self, /)
  |      Implement iter(self).
- |  
+ |
  |  __next__(self, /)
  |      Implement next(self).
- |  
+ |
  |  __reduce__(...)
  |      Return state information for pickling.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Static methods defined here:
- |  
+ |
  |  __new__(*args, **kwargs) from builtins.type
  |      Create and return a new object.  See help(type) for accurate signature.
 
 </description>
     <version>Python 3.11.2</version>
     <example>No example available.</example>
-    <related_commands>format, ge, iter, getattribute, self, from, def, type, class</related_commands>
+    <related_commands>self, iter, class, def, ge, from, type, format, getattribute</related_commands>
     <syntax>class map(object)
  |  map(func, *iterables) --&gt; map object</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#map</documentation_link>
   </CommandManual>
   <CommandManual name="max">
     <description>Help on built-in function max in module builtins:
@@ -656,7 +786,7 @@ class map(object)
 max(...)
     max(iterable, *[, default=obj, key=func]) -&gt; value
     max(arg1, arg2, *args, *[, key=func]) -&gt; value
-    
+
     With a single iterable argument, return its biggest item. The
     default keyword-only argument specifies an object to return if
     the provided iterable is empty.
@@ -665,11 +795,11 @@ max(...)
 </description>
     <version>Python 3.11.2</version>
     <example>No example available.</example>
-    <related_commands>ge, iter, def</related_commands>
+    <related_commands>def, ge, iter</related_commands>
     <syntax>max(...)
  max(iterable, *[, default=obj, key=func]) -&gt; value
  max(arg1, arg2, *args, *[, key=func]) -&gt; value</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#max</documentation_link>
   </CommandManual>
   <CommandManual name="min">
     <description>Help on built-in function min in module builtins:
@@ -677,7 +807,7 @@ max(...)
 min(...)
     min(iterable, *[, default=obj, key=func]) -&gt; value
     min(arg1, arg2, *args, *[, key=func]) -&gt; value
-    
+
     With a single iterable argument, return its smallest item. The
     default keyword-only argument specifies an object to return if
     the provided iterable is empty.
@@ -686,18 +816,18 @@ min(...)
 </description>
     <version>Python 3.11.2</version>
     <example>No example available.</example>
-    <related_commands>iter, def</related_commands>
+    <related_commands>def, iter</related_commands>
     <syntax>min(...)
  min(iterable, *[, default=obj, key=func]) -&gt; value
  min(arg1, arg2, *args, *[, key=func]) -&gt; value</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#min</documentation_link>
   </CommandManual>
   <CommandManual name="print">
     <description>Help on built-in function print in module builtins:
 
 print(*args, sep=' ', end='\n', file=None, flush=False)
     Prints the values to a stream, or to sys.stdout by default.
-    
+
     sep
       string inserted between values, default a space.
     end
@@ -710,9 +840,135 @@ print(*args, sep=' ', end='\n', file=None, flush=False)
 </description>
     <version>Python 3.11.2</version>
     <example>print('Hello, World!')</example>
-    <related_commands>append, str, def, int</related_commands>
+    <related_commands>str, def, int, append</related_commands>
     <syntax>print(*args, sep=' ', end='\n', file=None, flush=False)</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/functions.html#print</documentation_link>
+  </CommandManual>
+  <CommandManual name="range">
+    <description>Help on class range in module builtins:
+
+class range(object)
+ |  range(stop) -&gt; range object
+ |  range(start, stop[, step]) -&gt; range object
+ |
+ |  Return an object that produces a sequence of integers from start (inclusive)
+ |  to stop (exclusive) by step.  range(i, j) produces i, i+1, i+2, ..., j-1.
+ |  start defaults to 0, and stop is omitted!  range(4) produces 0, 1, 2, 3.
+ |  These are exactly the valid indices for a list of 4 elements.
+ |  When step is given, it specifies the increment (or decrement).
+ |
+ |  Methods defined here:
+ |
+ |  __bool__(self, /)
+ |      True if self else False
+ |
+ |  __contains__(self, key, /)
+ |      Return key in self.
+ |
+ |  __eq__(self, value, /)
+ |      Return self==value.
+ |
+ |  __ge__(self, value, /)
+ |      Return self&gt;=value.
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __getitem__(self, key, /)
+ |      Return self[key].
+ |
+ |  __gt__(self, value, /)
+ |      Return self&gt;value.
+ |
+ |  __hash__(self, /)
+ |      Return hash(self).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __le__(self, value, /)
+ |      Return self&lt;=value.
+ |
+ |  __len__(self, /)
+ |      Return len(self).
+ |
+ |  __lt__(self, value, /)
+ |      Return self&lt;value.
+ |
+ |  __ne__(self, value, /)
+ |      Return self!=value.
+ |
+ |  __reduce__(...)
+ |      Helper for pickle.
+ |
+ |  __repr__(self, /)
+ |      Return repr(self).
+ |
+ |  __reversed__(...)
+ |      Return a reverse iterator.
+ |
+ |  count(...)
+ |      rangeobject.count(value) -&gt; integer -- return number of occurrences of value
+ |
+ |  index(...)
+ |      rangeobject.index(value) -&gt; integer -- return index of value.
+ |      Raise ValueError if the value is not present.
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  start
+ |
+ |  step
+ |
+ |  stop
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>list, type, len, self, iter, reversed, eq, class, def, ge, contains, from, int, getattribute</related_commands>
+    <syntax>class range(object)
+ |  range(stop) -&gt; range object
+ |  range(start, stop[, step]) -&gt; range object</syntax>
+    <documentation_link>https://docs.python.org/3/library/stdtypes.html#range</documentation_link>
+  </CommandManual>
+  <CommandManual name="round">
+    <description>Help on built-in function round in module builtins:
+
+round(number, ndigits=None)
+    Round a number to a given precision in decimal digits.
+
+    The return value is an integer if ndigits is omitted or None.  Otherwise
+    the return value has the same type as the number.  ndigits may be negative.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>type, ge, int</related_commands>
+    <syntax>round(number, ndigits=None)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#round</documentation_link>
+  </CommandManual>
+  <CommandManual name="sorted">
+    <description>Help on built-in function sorted in module builtins:
+
+sorted(iterable, /, *, key=None, reverse=False)
+    Return a new list containing all items from the iterable in ascending order.
+
+    A custom key function can be supplied to customize the sort order, and the
+    reverse flag can be set to request the result in descending order.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>list, sort, iter, eq, set, from</related_commands>
+    <syntax>sorted(iterable, /, *, key=None, reverse=False)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#sorted</documentation_link>
   </CommandManual>
   <CommandManual name="str">
     <description>Help on class str in module builtins:
@@ -720,7 +976,7 @@ print(*args, sep=' ', end='\n', file=None, flush=False)
 class str(object)
  |  str(object='') -&gt; str
  |  str(bytes_or_buffer[, encoding[, errors]]) -&gt; str
- |  
+ |
  |  Create a new string object from the given object. If encoding or
  |  errors is specified, then the object must expose a data buffer
  |  that will be decoded using the given encoding and error handler.
@@ -728,98 +984,98 @@ class str(object)
  |  or repr(object).
  |  encoding defaults to sys.getdefaultencoding().
  |  errors defaults to 'strict'.
- |  
+ |
  |  Methods defined here:
- |  
+ |
  |  __add__(self, value, /)
  |      Return self+value.
- |  
+ |
  |  __contains__(self, key, /)
  |      Return key in self.
- |  
+ |
  |  __eq__(self, value, /)
  |      Return self==value.
- |  
+ |
  |  __format__(self, format_spec, /)
  |      Return a formatted version of the string as described by format_spec.
- |  
+ |
  |  __ge__(self, value, /)
  |      Return self&gt;=value.
- |  
+ |
  |  __getattribute__(self, name, /)
  |      Return getattr(self, name).
- |  
+ |
  |  __getitem__(self, key, /)
  |      Return self[key].
- |  
+ |
  |  __getnewargs__(...)
- |  
+ |
  |  __gt__(self, value, /)
  |      Return self&gt;value.
- |  
+ |
  |  __hash__(self, /)
  |      Return hash(self).
- |  
+ |
  |  __iter__(self, /)
  |      Implement iter(self).
- |  
+ |
  |  __le__(self, value, /)
  |      Return self&lt;=value.
- |  
+ |
  |  __len__(self, /)
  |      Return len(self).
- |  
+ |
  |  __lt__(self, value, /)
  |      Return self&lt;value.
- |  
+ |
  |  __mod__(self, value, /)
  |      Return self%value.
- |  
+ |
  |  __mul__(self, value, /)
  |      Return self*value.
- |  
+ |
  |  __ne__(self, value, /)
  |      Return self!=value.
- |  
+ |
  |  __repr__(self, /)
  |      Return repr(self).
- |  
+ |
  |  __rmod__(self, value, /)
  |      Return value%self.
- |  
+ |
  |  __rmul__(self, value, /)
  |      Return value*self.
- |  
+ |
  |  __sizeof__(self, /)
  |      Return the size of the string in memory, in bytes.
- |  
+ |
  |  __str__(self, /)
  |      Return str(self).
- |  
+ |
  |  capitalize(self, /)
  |      Return a capitalized version of the string.
- |      
+ |
  |      More specifically, make the first character have upper case and the rest lower
  |      case.
- |  
+ |
  |  casefold(self, /)
  |      Return a version of the string suitable for caseless comparisons.
- |  
+ |
  |  center(self, width, fillchar=' ', /)
  |      Return a centered string of length width.
- |      
+ |
  |      Padding is done using the specified fill character (default is a space).
- |  
+ |
  |  count(...)
  |      S.count(sub[, start[, end]]) -&gt; int
- |      
+ |
  |      Return the number of non-overlapping occurrences of substring sub in
  |      string S[start:end].  Optional arguments start and end are
  |      interpreted as in slice notation.
- |  
+ |
  |  encode(self, /, encoding='utf-8', errors='strict')
  |      Encode the string using the codec registered for encoding.
- |      
+ |
  |      encoding
  |        The encoding in which to encode the string.
  |      errors
@@ -828,302 +1084,302 @@ class str(object)
  |        UnicodeEncodeError.  Other possible values are 'ignore', 'replace' and
  |        'xmlcharrefreplace' as well as any other name registered with
  |        codecs.register_error that can handle UnicodeEncodeErrors.
- |  
+ |
  |  endswith(...)
  |      S.endswith(suffix[, start[, end]]) -&gt; bool
- |      
+ |
  |      Return True if S ends with the specified suffix, False otherwise.
  |      With optional start, test S beginning at that position.
  |      With optional end, stop comparing S at that position.
  |      suffix can also be a tuple of strings to try.
- |  
+ |
  |  expandtabs(self, /, tabsize=8)
  |      Return a copy where all tab characters are expanded using spaces.
- |      
+ |
  |      If tabsize is not given, a tab size of 8 characters is assumed.
- |  
+ |
  |  find(...)
  |      S.find(sub[, start[, end]]) -&gt; int
- |      
+ |
  |      Return the lowest index in S where substring sub is found,
  |      such that sub is contained within S[start:end].  Optional
  |      arguments start and end are interpreted as in slice notation.
- |      
+ |
  |      Return -1 on failure.
- |  
+ |
  |  format(...)
  |      S.format(*args, **kwargs) -&gt; str
- |      
+ |
  |      Return a formatted version of S, using substitutions from args and kwargs.
  |      The substitutions are identified by braces ('{' and '}').
- |  
+ |
  |  format_map(...)
  |      S.format_map(mapping) -&gt; str
- |      
+ |
  |      Return a formatted version of S, using substitutions from mapping.
  |      The substitutions are identified by braces ('{' and '}').
- |  
+ |
  |  index(...)
  |      S.index(sub[, start[, end]]) -&gt; int
- |      
+ |
  |      Return the lowest index in S where substring sub is found,
  |      such that sub is contained within S[start:end].  Optional
  |      arguments start and end are interpreted as in slice notation.
- |      
+ |
  |      Raises ValueError when the substring is not found.
- |  
+ |
  |  isalnum(self, /)
  |      Return True if the string is an alpha-numeric string, False otherwise.
- |      
+ |
  |      A string is alpha-numeric if all characters in the string are alpha-numeric and
  |      there is at least one character in the string.
- |  
+ |
  |  isalpha(self, /)
  |      Return True if the string is an alphabetic string, False otherwise.
- |      
+ |
  |      A string is alphabetic if all characters in the string are alphabetic and there
  |      is at least one character in the string.
- |  
+ |
  |  isascii(self, /)
  |      Return True if all characters in the string are ASCII, False otherwise.
- |      
+ |
  |      ASCII characters have code points in the range U+0000-U+007F.
  |      Empty string is ASCII too.
- |  
+ |
  |  isdecimal(self, /)
  |      Return True if the string is a decimal string, False otherwise.
- |      
+ |
  |      A string is a decimal string if all characters in the string are decimal and
  |      there is at least one character in the string.
- |  
+ |
  |  isdigit(self, /)
  |      Return True if the string is a digit string, False otherwise.
- |      
+ |
  |      A string is a digit string if all characters in the string are digits and there
  |      is at least one character in the string.
- |  
+ |
  |  isidentifier(self, /)
  |      Return True if the string is a valid Python identifier, False otherwise.
- |      
+ |
  |      Call keyword.iskeyword(s) to test whether string s is a reserved identifier,
  |      such as &quot;def&quot; or &quot;class&quot;.
- |  
+ |
  |  islower(self, /)
  |      Return True if the string is a lowercase string, False otherwise.
- |      
+ |
  |      A string is lowercase if all cased characters in the string are lowercase and
  |      there is at least one cased character in the string.
- |  
+ |
  |  isnumeric(self, /)
  |      Return True if the string is a numeric string, False otherwise.
- |      
+ |
  |      A string is numeric if all characters in the string are numeric and there is at
  |      least one character in the string.
- |  
+ |
  |  isprintable(self, /)
  |      Return True if the string is printable, False otherwise.
- |      
+ |
  |      A string is printable if all of its characters are considered printable in
  |      repr() or if it is empty.
- |  
+ |
  |  isspace(self, /)
  |      Return True if the string is a whitespace string, False otherwise.
- |      
+ |
  |      A string is whitespace if all characters in the string are whitespace and there
  |      is at least one character in the string.
- |  
+ |
  |  istitle(self, /)
  |      Return True if the string is a title-cased string, False otherwise.
- |      
+ |
  |      In a title-cased string, upper- and title-case characters may only
  |      follow uncased characters and lowercase characters only cased ones.
- |  
+ |
  |  isupper(self, /)
  |      Return True if the string is an uppercase string, False otherwise.
- |      
+ |
  |      A string is uppercase if all cased characters in the string are uppercase and
  |      there is at least one cased character in the string.
- |  
+ |
  |  join(self, iterable, /)
  |      Concatenate any number of strings.
- |      
+ |
  |      The string whose method is called is inserted in between each given string.
  |      The result is returned as a new string.
- |      
+ |
  |      Example: '.'.join(['ab', 'pq', 'rs']) -&gt; 'ab.pq.rs'
- |  
+ |
  |  ljust(self, width, fillchar=' ', /)
  |      Return a left-justified string of length width.
- |      
+ |
  |      Padding is done using the specified fill character (default is a space).
- |  
+ |
  |  lower(self, /)
  |      Return a copy of the string converted to lowercase.
- |  
+ |
  |  lstrip(self, chars=None, /)
  |      Return a copy of the string with leading whitespace removed.
- |      
+ |
  |      If chars is given and not None, remove characters in chars instead.
- |  
+ |
  |  partition(self, sep, /)
  |      Partition the string into three parts using the given separator.
- |      
+ |
  |      This will search for the separator in the string.  If the separator is found,
  |      returns a 3-tuple containing the part before the separator, the separator
  |      itself, and the part after it.
- |      
+ |
  |      If the separator is not found, returns a 3-tuple containing the original string
  |      and two empty strings.
- |  
+ |
  |  removeprefix(self, prefix, /)
  |      Return a str with the given prefix string removed if present.
- |      
+ |
  |      If the string starts with the prefix string, return string[len(prefix):].
  |      Otherwise, return a copy of the original string.
- |  
+ |
  |  removesuffix(self, suffix, /)
  |      Return a str with the given suffix string removed if present.
- |      
+ |
  |      If the string ends with the suffix string and that suffix is not empty,
  |      return string[:-len(suffix)]. Otherwise, return a copy of the original
  |      string.
- |  
+ |
  |  replace(self, old, new, count=-1, /)
  |      Return a copy with all occurrences of substring old replaced by new.
- |      
+ |
  |        count
  |          Maximum number of occurrences to replace.
  |          -1 (the default value) means replace all occurrences.
- |      
+ |
  |      If the optional argument count is given, only the first count occurrences are
  |      replaced.
- |  
+ |
  |  rfind(...)
  |      S.rfind(sub[, start[, end]]) -&gt; int
- |      
+ |
  |      Return the highest index in S where substring sub is found,
  |      such that sub is contained within S[start:end].  Optional
  |      arguments start and end are interpreted as in slice notation.
- |      
+ |
  |      Return -1 on failure.
- |  
+ |
  |  rindex(...)
  |      S.rindex(sub[, start[, end]]) -&gt; int
- |      
+ |
  |      Return the highest index in S where substring sub is found,
  |      such that sub is contained within S[start:end].  Optional
  |      arguments start and end are interpreted as in slice notation.
- |      
+ |
  |      Raises ValueError when the substring is not found.
- |  
+ |
  |  rjust(self, width, fillchar=' ', /)
  |      Return a right-justified string of length width.
- |      
+ |
  |      Padding is done using the specified fill character (default is a space).
- |  
+ |
  |  rpartition(self, sep, /)
  |      Partition the string into three parts using the given separator.
- |      
+ |
  |      This will search for the separator in the string, starting at the end. If
  |      the separator is found, returns a 3-tuple containing the part before the
  |      separator, the separator itself, and the part after it.
- |      
+ |
  |      If the separator is not found, returns a 3-tuple containing two empty strings
  |      and the original string.
- |  
+ |
  |  rsplit(self, /, sep=None, maxsplit=-1)
  |      Return a list of the substrings in the string, using sep as the separator string.
- |      
+ |
  |        sep
  |          The separator used to split the string.
- |      
+ |
  |          When set to None (the default value), will split on any whitespace
  |          character (including \\n \\r \\t \\f and spaces) and will discard
  |          empty strings from the result.
  |        maxsplit
  |          Maximum number of splits (starting from the left).
  |          -1 (the default value) means no limit.
- |      
+ |
  |      Splitting starts at the end of the string and works to the front.
- |  
+ |
  |  rstrip(self, chars=None, /)
  |      Return a copy of the string with trailing whitespace removed.
- |      
+ |
  |      If chars is given and not None, remove characters in chars instead.
- |  
+ |
  |  split(self, /, sep=None, maxsplit=-1)
  |      Return a list of the substrings in the string, using sep as the separator string.
- |      
+ |
  |        sep
  |          The separator used to split the string.
- |      
+ |
  |          When set to None (the default value), will split on any whitespace
  |          character (including \\n \\r \\t \\f and spaces) and will discard
  |          empty strings from the result.
  |        maxsplit
  |          Maximum number of splits (starting from the left).
  |          -1 (the default value) means no limit.
- |      
+ |
  |      Note, str.split() is mainly useful for data that has been intentionally
  |      delimited.  With natural text that includes punctuation, consider using
  |      the regular expression module.
- |  
+ |
  |  splitlines(self, /, keepends=False)
  |      Return a list of the lines in the string, breaking at line boundaries.
- |      
+ |
  |      Line breaks are not included in the resulting list unless keepends is given and
  |      true.
- |  
+ |
  |  startswith(...)
  |      S.startswith(prefix[, start[, end]]) -&gt; bool
- |      
+ |
  |      Return True if S starts with the specified prefix, False otherwise.
  |      With optional start, test S beginning at that position.
  |      With optional end, stop comparing S at that position.
  |      prefix can also be a tuple of strings to try.
- |  
+ |
  |  strip(self, chars=None, /)
  |      Return a copy of the string with leading and trailing whitespace removed.
- |      
+ |
  |      If chars is given and not None, remove characters in chars instead.
- |  
+ |
  |  swapcase(self, /)
  |      Convert uppercase characters to lowercase and lowercase characters to uppercase.
- |  
+ |
  |  title(self, /)
  |      Return a version of the string where each word is titlecased.
- |      
+ |
  |      More specifically, words start with uppercased characters and all remaining
  |      cased characters have lower case.
- |  
+ |
  |  translate(self, table, /)
  |      Replace each character in the string using the given translation table.
- |      
+ |
  |        table
  |          Translation table, which must be a mapping of Unicode ordinals to
  |          Unicode ordinals, strings, or None.
- |      
+ |
  |      The table must implement lookup/indexing via __getitem__, for instance a
  |      dictionary or list.  If this operation raises LookupError, the character is
  |      left untouched.  Characters mapped to None are deleted.
- |  
+ |
  |  upper(self, /)
  |      Return a copy of the string converted to uppercase.
- |  
+ |
  |  zfill(self, width, /)
  |      Pad a numeric string with zeros on the left, to fill a field of the given width.
- |      
+ |
  |      The string is never truncated.
- |  
+ |
  |  ----------------------------------------------------------------------
  |  Static methods defined here:
- |  
+ |
  |  __new__(*args, **kwargs) from builtins.type
  |      Create and return a new object.  See help(type) for accurate signature.
- |  
+ |
  |  maketrans(...)
  |      Return a translation table usable for str.translate().
- |      
+ |
  |      If there is only one argument, it must be a dictionary mapping Unicode
  |      ordinals (integers) or characters to Unicode ordinals, strings or None.
  |      Character keys will be then converted to ordinals.
@@ -1135,10 +1391,183 @@ class str(object)
 </description>
     <version>Python 3.11.2</version>
     <example>No example available.</example>
-    <related_commands>format, iter, add, range, type, int, map, print, ge, abs, break, class, sum, eq, self, with, max, del, raise, contains, list, dict, getattribute, len, remove, set, from, tuple, def, try</related_commands>
+    <related_commands>list, len, dict, self, print, class, def, remove, getattribute, add, map, eq, ge, int, type, try, range, max, contains, from, format, sum, with, tuple, abs, iter, raise, set, del, break</related_commands>
     <syntax>class str(object)
  |  str(object='') -&gt; str
  |  str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</syntax>
-    <documentation_link>https://docs.python.org/3/</documentation_link>
+    <documentation_link>https://docs.python.org/3/library/stdtypes.html#str</documentation_link>
+  </CommandManual>
+  <CommandManual name="sum">
+    <description>Help on built-in function sum in module builtins:
+
+sum(iterable, /, start=0)
+    Return the sum of a 'start' value (default: 0) plus an iterable of numbers
+
+    When the iterable is empty, return the start value.
+    This function is intended specifically for use with numeric values and may
+    reject non-numeric types.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>with, iter, def, int, type</related_commands>
+    <syntax>sum(iterable, /, start=0)</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#sum</documentation_link>
+  </CommandManual>
+  <CommandManual name="type">
+    <description>Help on class type in module builtins:
+
+class type(object)
+ |  type(object) -&gt; the object's type
+ |  type(name, bases, dict, **kwds) -&gt; a new type
+ |
+ |  Methods defined here:
+ |
+ |  __call__(self, /, *args, **kwargs)
+ |      Call self as a function.
+ |
+ |  __delattr__(self, name, /)
+ |      Implement delattr(self, name).
+ |
+ |  __dir__(self, /)
+ |      Specialized __dir__ implementation for types.
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __init__(self, /, *args, **kwargs)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |
+ |  __instancecheck__(self, instance, /)
+ |      Check if an object is an instance.
+ |
+ |  __or__(self, value, /)
+ |      Return self|value.
+ |
+ |  __repr__(self, /)
+ |      Return repr(self).
+ |
+ |  __ror__(self, value, /)
+ |      Return value|self.
+ |
+ |  __setattr__(self, name, value, /)
+ |      Implement setattr(self, name, value).
+ |
+ |  __sizeof__(self, /)
+ |      Return memory consumption of the type object.
+ |
+ |  __subclasscheck__(self, subclass, /)
+ |      Check if a class is a subclass.
+ |
+ |  __subclasses__(self, /)
+ |      Return a list of immediate subclasses.
+ |
+ |  mro(self, /)
+ |      Return a type's method resolution order.
+ |
+ |  ----------------------------------------------------------------------
+ |  Class methods defined here:
+ |
+ |  __prepare__(...)
+ |      __prepare__() -&gt; dict
+ |      used to create the namespace for the class statement
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(*args, **kwargs)
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  __abstractmethods__
+ |
+ |  __annotations__
+ |
+ |  __dict__
+ |
+ |  __text_signature__
+ |
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |
+ |  __base__ = &lt;class 'object'&gt;
+ |      The base class of the class hierarchy.
+ |
+ |      When called, it accepts no arguments and returns a new featureless
+ |      instance that has no instance attributes and cannot be given any.
+ |
+ |
+ |  __bases__ = (&lt;class 'object'&gt;,)
+ |
+ |  __basicsize__ = 904
+ |
+ |  __dictoffset__ = 264
+ |
+ |  __flags__ = 2148031744
+ |
+ |  __itemsize__ = 40
+ |
+ |  __mro__ = (&lt;class 'type'&gt;, &lt;class 'object'&gt;)
+ |
+ |  __weakrefoffset__ = 368
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>list, dict, str, abs, self, class, def, set, ge, del, sum, getattribute</related_commands>
+    <syntax>class type(object)
+ |  type(object) -&gt; the object's type
+ |  type(name, bases, dict, **kwds) -&gt; a new type</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#type</documentation_link>
+  </CommandManual>
+  <CommandManual name="zip">
+    <description>Help on class zip in module builtins:
+
+class zip(object)
+ |  zip(*iterables, strict=False) --&gt; Yield tuples until an input is exhausted.
+ |
+ |     &gt;&gt;&gt; list(zip('abcdefg', range(3), range(4)))
+ |     [('a', 0, 0), ('b', 1, 1), ('c', 2, 2)]
+ |
+ |  The zip object yields n-length tuples, where n is the number of iterables
+ |  passed as positional arguments to zip().  The i-th element in every tuple
+ |  comes from the i-th iterable argument to zip().  This continues until the
+ |  shortest argument is exhausted.
+ |
+ |  If strict is true and one of the arguments is exhausted before the others,
+ |  raise a ValueError.
+ |
+ |  Methods defined here:
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __next__(self, /)
+ |      Implement next(self).
+ |
+ |  __reduce__(...)
+ |      Return state information for pickling.
+ |
+ |  __setstate__(...)
+ |      Set state information for unpickling.
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+
+</description>
+    <version>Python 3.11.2</version>
+    <example>No example available.</example>
+    <related_commands>list, len, self, class, def, pass, getattribute, str, ge, type, yield, range, from, format, tuple, iter, continue, raise, set, input</related_commands>
+    <syntax>class zip(object)
+ |  zip(*iterables, strict=False) --&gt; Yield tuples until an input is exhausted.</syntax>
+    <documentation_link>https://docs.python.org/3/library/functions.html#zip</documentation_link>
   </CommandManual>
 </AllCommandManuals>

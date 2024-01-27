@@ -26,6 +26,8 @@ case 9 : return 0x6F;
 default : return 0x00;
 }
 }
+
+
 int main(){
 IO0DIR |= 0x000000FF; //P0.0 ...P0.7 output
 IO1DIR &= ~(0x000F0000); //P1.16 ...P1.19 input
