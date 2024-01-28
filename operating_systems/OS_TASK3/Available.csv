@@ -1,2 +1,2 @@
-ResourceA,ResourceB,ResourceC,ResourceD,ResourceE
+ResourceA,ResourceB,ResourceC,ResourceD,ResourceE #note that the number of instances of ResourceB=2 now
 2,2,2,1,3

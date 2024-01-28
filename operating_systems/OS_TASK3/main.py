@@ -107,7 +107,7 @@ for i in range(N):  # for all processes
 
 # 2-
 counter = 0
-canGrant = True
+isSafeToGrant = True
 i = 0
 executions = []
 while i < N:
@@ -121,14 +121,14 @@ while i < N:
         if not finish[i]:
             for j in range(M):
                 if request[i][1][j] > work[j]:
-                    canGrant = False
+                    isSafeToGrant = False
                     break
-        if canGrant :
+        if isSafeToGrant:
             print("granted")
         else:
             print("not granted")
 
-        if canGrant :
+        if isSafeToGrant:
             # 3-
             for j in range(M):
                 work[j] = work[j] + allocation[i][1][j]
@@ -140,7 +140,7 @@ while i < N:
                     break
             i = t - 1
 
-        canGrant = True
+        isSafeToGrant = True
         i += 1
         print()
         counter += 1
@@ -148,7 +148,14 @@ while i < N:
             print("finished execution")
             break
     else:
-        i+=1
+        i += 1
+
+print("memory after execution:")
+print(f"finish: {finish}")
+print(f"work: {work}")
+print(f"request: {request}")
+
+
 print("--------------------------------------------------------------------------------")
 print()
 

@@ -33,59 +33,66 @@ int: int('10') - Converts the string '10' to an integer.
 The max() function returns the largest item in an iterable or the
 largest of two or more arguments. If an iterable like a list or a
 tuple is provided, it returns the item with the highest value.
-max: max([1, 2, 3]) will return 3.
+max: max([1, 2, 3]) - will return 3.
 
 The min() function in Python returns the smallest item from an iterable or the smallest
 of two or more arguments. It is used to find the
 lowest value in a sequence.
-min: min([4, 2, 8]) would return 2.
+min: min([4, 2, 8]) - would return 2.
 
 The map() function applies a given function to each item of an
 iterable (like a list) and returns an iterator. It is often used for transforming data.
-map: map(lambda x: x * 2, [1, 2, 3]) would double each element in the list.
+map: map(lambda x: x * 2, [1, 2, 3]) - would double each element in the list.
 
 The len() function is used to determine the number of items in a container
 like a list, string, or dictionary. It is often used to find out how many
 elements are in a collection.
-len: len([1, 2, 3]) would return 3.
+len: len([1, 2, 3]) - would return 3.
 
 The sum() function calculates the total of all numerical values in an iterable.
 It adds up all the elements in the given sequence.
-sum: sum([1, 2, 3]) would return 6.
+sum: sum([1, 2, 3]) - would return 6.
 
 The sorted() function returns a new sorted list from the elements of any iterable.
 It can be customized with key functions for complex sorting.
-sorted: sorted([3, 1, 2]) would return [1, 2, 3].
+sorted: sorted([3, 1, 2]) - would return [1, 2, 3].
 
 The range() function generates a sequence of numbers. It is commonly
 used in loops to repeat actions a certain number of times.
-range: range(3) would generate the numbers 0, 1, 2.
+range: range(3) - would generate the numbers 0, 1, 2.
 
 The enumerate() function adds a counter to an iterable and returns it as
 an enumerate object. This is often used in loops to get both the index and the value.
-enumerate: enumerate(['a', 'b', 'c']) would return (0, 'a'), (1, 'b'), (2, 'c').
+enumerate: enumerate(['a', 'b', 'c']) - would return (0, 'a'), (1, 'b'), (2, 'c').
 
 The zip() function combines several iterables into tuples, pairing up elements based on
 their position. It's often used for parallel iteration.
-zip: zip([1, 2], ['a', 'b']) would return (1, 'a'), (2, 'b').
+zip: zip([1, 2], ['a', 'b']) - would return (1, 'a'), (2, 'b').
 
 The filter() function constructs an iterator from elements of an
 iterable for which a function returns true. It is used to filter collections.
-filter: filter(lambda x: x > 1, [1, 2, 3]) would return [2, 3].
+filter: filter(lambda x: x > 1, [1, 2, 3]) - would return [2, 3].
 
 The type() function returns the type of an object. This is often used
 to find the class type of a variable.
-type: type(123) would return <class 'int'>.
+type: type(123) - would return <class 'int'>.
 
 The abs() function returns the absolute value of a number, which is the number's distance from zero.
 It works on both integers and floating-point numbers.
-abs: abs(-5) would return 5.
+abs: abs(-5) - would return 5.
 
 The round() function rounds a floating-point number to a specified number of decimal places
 (default is 0). It is used for number approximation.
-round: round(3.14159, 2) would return 3.14.
+round: round(3.14159, 2) - would return 3.14.
 
-all: The all() function returns True if all elements of the iterable are true
+The all() function returns True if all elements of the iterable are true
 (or if the iterable is empty). It is often used to check if all conditions are met.
-all: all([True, True, False]) would return False.
+all: all([True, True, False]) - would return False.
 
+The help() function is used to see the documentation of a particular object
+(such as a library module, function, or class) that you are not familiar
+with or to refresh your memory on it. It can be extremely useful when working
+interactively because it allows you to quickly access descriptions and see the
+correct syntax directly within the interpreter or script.
+
+help: help(print) - Using the help function to get information about the built-in print function
