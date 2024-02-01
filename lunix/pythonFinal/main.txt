@@ -1,0 +1,63 @@
+import re
+import random
+
+
+def get_command_output(command):
+    if command == "show system":
+        return "[Enter]\nbrief View to filter the data\n<user-id> Name of the user\n<arg> (enum:chap,pap,login | string)"
+    elif "show system brief" in command and "20" not in command:
+        return "[Enter]\n<arg> (integer:5 - 60)"
+    elif "show system student" in command:
+        return "[Enter]"
+    elif "show system pap" in command:
+        return "pap2 Name of the pap2"
+    else:
+        return "Command not recognized"
+
+
+def extract_arguments(output):
+    args = []
+    if "<user-id>" in output:
+        args.append("student")
+    arg_matches = re.findall(r"<arg> \((.*?)\)", output)
+    for arg in arg_matches:
+        if 'enum' in arg:
+            choices = arg.split('|')[0].replace('enum:', '').split(',')
+            args.append(random.choice(choices).strip())
+        elif 'integer' in arg:
+            min_val, max_val = map(int, arg.split(':')[1].split('-'))
+            args.append(str(random.randint(min_val, max_val)))
+    return args
+
+
+def process_commands(base_command):
+    root_commands = [base_command]
+    expandable_commands = [base_command]
+
+    while expandable_commands:
+        current_command = expandable_commands.pop(0)
+        output = get_command_output(current_command)
+
+        if "[Enter]" in output and current_command not in root_commands:
+            root_commands.append(current_command)
+
+        if "brief" in output:
+            brief_command = f"{current_command} brief"
+            if brief_command not in root_commands and brief_command not in expandable_commands:
+                expandable_commands.append(brief_command)
+
+        for arg in extract_arguments(output):
+            new_command = f"{current_command} {arg}"
+            if new_command not in root_commands and new_command not in expandable_commands:
+                if "[Enter]" in get_command_output(new_command):
+                    root_commands.append(new_command)
+                else:
+                    expandable_commands.append(new_command)
+
+    return root_commands
+
+
+root_commands = process_commands("show system")
+print("root Commands:")
+for cmd in root_commands:
+    print(cmd)
