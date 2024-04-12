@@ -1,0 +1,17 @@
+45
+~M 0 "" 0 $root
+~A 1 "" 0 $root
+~M 1 "../src/jcs.v" 1 dff
+~A 1 "../src/jcs.v" 1 dff
+~M 3 "../src/dff.v" 15 dff_tb
+~A 1 "../src/dff.v" 15 dff_tb
+~M 1 "../src/jcb.v" 1 jcb
+~A 1 "../src/jcb.v" 1 jcb
+~M 3 "../src/jcb.v" 26 jcb_T
+~A 1 "../src/jcb.v" 26 jcb_T
+~M 1 "../src/jcs.v" 13 jcs
+~A 1 "../src/jcs.v" 13 jcs
+~M 3 "../src/jcs.v" 40 jcs_T
+~A 1 "../src/jcs.v" 40 jcs_T
+~M 3 "../src/dff.v" 35 jcs_tb
+~A 1 "../src/dff.v" 35 jcs_tb

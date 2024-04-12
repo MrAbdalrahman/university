@@ -1,0 +1,1 @@
+-o E:/active_HDL/HM1/H1_DFF/compile -lc E:/active_HDL/HM1/library.cfg -fl E:/active_HDL/HM1/H1_DFF/projlib.cfg -pli "E:/active_HDL/bin/systf.dll" -epr E:/active_HDL/HM1/H1_DFF/compile/H1_DFF.epr -O2 -sve -msg 5 -sv2k12 -work H1_DFF E:/active_HDL/HM1/H1_DFF/src/jcs.v E:/active_HDL/HM1/H1_DFF/src/jcb.v 

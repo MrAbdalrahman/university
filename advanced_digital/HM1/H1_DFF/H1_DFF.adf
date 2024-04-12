@@ -1,0 +1,32 @@
+[Project]
+Current Flow=Generic
+VCS=0
+version=4
+Current Config=compile
+[Configurations]
+compile=H1_DFF
+[Library]
+H1_DFF=.\H1_DFF\H1_DFF.lib
+[$LibMap$]
+H1_DFF=.
+Active_lib=
+[Settings]
+FLOW_TYPE=HDL
+LANGUAGE=VERILOG
+REFRESH_FLOW=1
+FLOWTOOLS=NONE
+FAMILY=
+[Files]
+/jcs.v=-1
+/jcb.v=-1
+/jcs_wave.awc=-1
+/jcb_wave.awc=-1
+[Files.Data]
+.\src\jcs.v=Verilog Source Code
+.\src\jcb.v=Verilog Source Code
+.\src\jcs_wave.awc=Accelerated Waveform Configuration
+.\src\jcb_wave.awc=Accelerated Waveform Configuration
+[HierarchyViewer]
+HierarchyInformation=
+ShowHide=ShowTopLevel
+Selected=
