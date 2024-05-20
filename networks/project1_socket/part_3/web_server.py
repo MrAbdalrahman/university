@@ -123,7 +123,7 @@ class MyHTTPServer:
 
 if __name__ == "__main__":
     host = '0.0.0.0'
-    port = 9966
+    port = 5555
     server = MyHTTPServer(host, port)
 
     try:
