@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Online Clinic Management System</title>
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+    <style>
+      .contact-header {
+        background: url("{% static 'mainApp/images/contact-bg.jpg' %}")
+          no-repeat center center/cover;
+        height: 40vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+      }
+
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+
+      .contact-header h1 {
+        font-size: 48px;
+        margin: 0;
+      }
+      body::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      .contact-form-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .contact-form h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .contact-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .contact-form .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #2c3e50;
+      }
+
+      .contact-form .form-group input,
+      .contact-form .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: "Roboto", sans-serif;
+      }
+
+      .contact-form .form-group textarea {
+        resize: vertical;
+        height: 150px;
+      }
+
+      .contact-form button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #3498db;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .contact-form button:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body data-base-url="{% static 'mainApp/' %}">
+    <header>
+      <div class="logo">Online Clinic Management System</div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="contact-header">
+      <h1>Contact Us</h1>
+    </div>
+
+    <div class="contact-form-container">
+      <h2>Get in Touch</h2>
+      <form class="contact-form" action="{% url 'contact' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject:</label>
+          <input type="text" id="subject" name="subject" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Online Clinic Management System. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

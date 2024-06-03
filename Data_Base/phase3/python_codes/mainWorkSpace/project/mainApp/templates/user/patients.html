@@ -1,0 +1,679 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patients</title>
+    <style>
+      html,
+      body {
+        overflow-x: hidden; /* Only prevent horizontal overflow */
+        height: 100%; /* Full height to ensure sticky can calculate positioning */
+      }
+
+      .loading {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 32px;
+        color: #e11414;
+      }
+      .loading i {
+        margin-right: 10px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .modal-lg {
+        max-width: 90%; /* You can adjust this percentage as needed */
+      }
+      .modal-body table {
+        width: 100%; /* Ensure the table takes up full width */
+        overflow-x: auto; /* Add horizontal scroll if needed */
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        padding-top: 60px; /* Padding to avoid overlap with fixed header */
+      }
+
+      .button-container {
+        display: flex; /* Aligns child buttons in a row */
+        justify-content: flex-start; /* Aligns buttons to the start of the container */
+        gap: 10px; /* Adds space between buttons */
+        margin-bottom: 20px; /* Extra space below the button container */
+      }
+
+      .button {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        white-space: nowrap; /* Prevents buttons from wrapping text */
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 1000; /* Ensures it is above other content */
+        width: 100%; /* Full width */
+        background-color: #333; /* Ensures visibility over content */
+        color: white;
+        padding: 10px 20px;
+      }
+
+      .container {
+        padding-top: 70px; /* Increase padding-top to ensure content doesn't overlap under the header */
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+      .button-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows buttons to wrap onto the next line if not enough space */
+      }
+      .toggle-button {
+        cursor: pointer;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+
+      h1 {
+        color: #333;
+        display: inline-block; /* Align with toggle button */
+        margin-right: 10px; /* Space between header and button */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+
+      .container {
+        padding-top: 60px; /* Padding to avoid overlap with fixed header */
+      }
+      .toggle-button {
+        cursor: pointer;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var submitButton = document.getElementById("submitQueryButton");
+        var loadingSpinner = document.getElementById("loadingSpinner");
+
+        if (submitButton) {
+          submitButton.addEventListener("click", function () {
+            loadingSpinner.style.display = "flex"; // Show the loading spinner
+            processNLQuery();
+          });
+        }
+      });
+
+      function processNLQuery() {
+        const query = document.getElementById("nlQueryInput").value;
+        const url = "{% url 'process_query' %}";
+        console.log("URL being called:", url);
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: query }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            var loadingSpinner = document.getElementById("loadingSpinner");
+            loadingSpinner.style.display = "none"; // Hide the loading spinner
+            if (data.success) {
+              console.log("Query result:", data.result);
+              const resultTableBody = document.getElementById(
+                "queryResultTableBody"
+              );
+              const resultBox = document.getElementById("queryResultBox");
+              resultTableBody.innerHTML = "";
+              resultBox.innerHTML = "";
+
+              if (data.result.length === 1) {
+                const singleResult = data.result[0];
+                for (const key in singleResult) {
+                  const div = document.createElement("div");
+                  div.innerHTML = `<strong>${key}:</strong> ${singleResult[key]}`;
+                  resultBox.appendChild(div);
+                }
+                $("#queryResultsModal").modal("show");
+                $("#queryResultsModal .modal-body").hide();
+                $("#queryResultsModal .modal-body-single").show();
+              } else {
+                data.result.forEach((patient) => {
+                  const row = document.createElement("tr");
+                  row.innerHTML = `
+                        <td>${patient["Patient_ID"]}</td>
+                        <td>${patient["Name"]}</td>
+                        <td>${patient["DOB"]}</td>
+                        <td>${patient["Address"]}</td>
+                        <td>${patient["Email"]}</td>
+                    `;
+                  resultTableBody.appendChild(row);
+                });
+                $("#queryResultsModal").modal("show");
+                $("#queryResultsModal .modal-body").show();
+                $("#queryResultsModal .modal-body-single").hide();
+              }
+            } else {
+              alert("Failed to process query: " + data.error);
+            }
+          })
+          .catch((error) => {
+            var loadingSpinner = document.getElementById("loadingSpinner");
+            loadingSpinner.style.display = "none"; // Hide the loading spinner
+            console.error("Error:", error);
+          });
+      }
+
+      function submitUpdate() {
+        var patientData = {
+          patient_id: document.getElementById("modal-patient-id").value,
+          name: document.getElementById("modal-name").value,
+          dob: document.getElementById("modal-dob").value,
+          address: document.getElementById("modal-address").value,
+          email: document.getElementById("modal-email").value,
+        };
+
+        fetch("{% url 'update_patient' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(patientData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              $("#updatePatientModal").modal("hide");
+              window.location.reload();
+            } else {
+              alert("Failed to update patient.");
+            }
+          });
+      }
+
+      function gotoadd() {
+        window.location.href = "{% url 'add_patient' %}";
+      }
+
+      function goback() {
+        window.location.href = "{% url 'control' %}";
+      }
+      function toggleTable() {
+        var table = document.getElementById("patientTable");
+        var btn = document.getElementById("toggleButton");
+        if (table.style.display === "none") {
+          table.style.display = "";
+          btn.textContent = "Hide";
+        } else {
+          table.style.display = "none";
+          btn.textContent = "Show";
+        }
+      }
+
+      function selectRow(row) {
+        var checkbox = row.getElementsByTagName("input")[0];
+        checkbox.checked = !checkbox.checked;
+        row.style.backgroundColor = checkbox.checked ? "#f8d7da" : ""; // Change color on select
+      }
+
+      function deleteSelectedPatients() {
+        var selected = document.querySelectorAll(
+          'input[name="selected_patient"]:checked'
+        );
+        var patientIds = Array.from(selected).map((input) => input.value);
+
+        if (
+          patientIds.length > 0 &&
+          confirm("Are you sure you want to delete selected patients?")
+        ) {
+          fetch("{% url 'delete_patients' %}", {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ patient_ids: patientIds }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.reload(); // Reload the page to reflect the changes
+              } else {
+                alert("Error deleting patients");
+              }
+            });
+        }
+      }
+
+      function prepareUpdate() {
+        var selected = document.querySelector(
+          'input[name="selected_patient"]:checked'
+        );
+        if (selected) {
+          fetch('{% url "get_patient_details" %}', {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ patient_id: selected.value }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                openUpdateModal(data.patient);
+              } else {
+                alert("Failed to fetch patient details.");
+              }
+            });
+        } else {
+          alert("Please select a patient to update.");
+        }
+      }
+
+      function openUpdateModal(patient) {
+        // Assuming you have modal fields with IDs matching these keys
+        document.getElementById("modal-patient-id").value = patient.patient_id;
+        document.getElementById("modal-name").value = patient.name;
+        document.getElementById("modal-dob").value = patient.dob;
+        document.getElementById("modal-address").value = patient.address;
+        document.getElementById("modal-email").value = patient.email;
+
+        // Open the modal
+        $("#updatePatientModal").modal("show");
+      }
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div>Welcome, {{ username }}</div>
+      <button class="button" onclick="goback()">Return to Control Panel</button>
+      <button class="button" onclick="location.href='logout'">Log Out</button>
+
+      <div class="button-container">
+        <button
+          class="button toggle-button"
+          id="toggleButton"
+          onclick="toggleTable()"
+        >
+          Hide
+        </button>
+        <button class="button" onclick="gotoadd()">Add a Patient</button>
+        <button class="button" onclick="prepareUpdate()">
+          Update Selected Patient
+        </button>
+        <button class="button" onclick="deleteSelectedPatients()">
+          Delete Selected Patients
+        </button>
+        <button class="button" onclick="window.location.reload();">
+          Refresh
+        </button>
+        <button
+          class="button"
+          data-toggle="modal"
+          data-target="#smartFindModal"
+        >
+          Smart Find
+        </button>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Patient Records</h1>
+
+      <table id="patientTable">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Patient_ID</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>Address</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+          <tr
+            data-patient-id="{{ patient.patient_id }}"
+            onclick="selectRow(this);"
+          >
+            <td>
+              <input
+                type="checkbox"
+                name="selected_patient"
+                value="{{ patient.patient_id }}"
+              />
+            </td>
+            <td>{{ patient.patient_id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.dob }}</td>
+            <td>{{ patient.address }}</td>
+            <td>{{ patient.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Update Patient Modal -->
+    <div
+      class="modal fade"
+      id="updatePatientModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updatePatientModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updatePatientModalLabel">
+              Update Patient
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="updatePatientForm">
+              <input type="hidden" id="modal-patient-id" />
+              <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="modal-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>DOB:</label>
+                <input type="date" id="modal-dob" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Address:</label>
+                <input type="text" id="modal-address" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="modal-email" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="submitUpdate()"
+            >
+              Save changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div
+      class="modal fade"
+      id="smartFindModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="smartFindModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="smartFindModalLabel">
+              Enter Your Query
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input
+              type="text"
+              class="form-control"
+              id="nlQueryInput"
+              placeholder="Type your target"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="submitQueryButton"
+            >
+              Submit Query
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Patient Modal -->
+    <div
+      class="modal fade"
+      id="updatePatientModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updatePatientModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updatePatientModalLabel">
+              Update Patient
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="updatePatientForm">
+              <input type="hidden" id="modal-patient-id" />
+              <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="modal-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>DOB:</label>
+                <input type="date" id="modal-dob" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Address:</label>
+                <input type="text" id="modal-address" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="modal-email" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="submitUpdate()"
+            >
+              Save changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure for Query Results -->
+    <div
+      class="modal fade"
+      id="queryResultsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="queryResultsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <!-- Add modal-lg class here -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="queryResultsModalLabel">
+              Query Results
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Patient_ID</th>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>Address</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody id="queryResultTableBody">
+                <!-- Results will be appended here -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-body-single" style="display: none">
+            <div
+              id="queryResultBox"
+              class="p-3"
+              style="background-color: #f9f9f9; border: 1px solid #ddd"
+            >
+              <!-- Single result will be displayed here -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="loading" id="loadingSpinner">
+      <i class="fas fa-spinner"></i> Loading...
+    </div>
+  </body>
+</html>

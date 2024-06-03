@@ -1,0 +1,100 @@
+{% load static %}
+
+<script>
+function redirectToVisits() {
+    window.location.href = "{% url 'visits' %}";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Visit</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .messages {
+            padding: 10px;
+            background: #ffdddd;
+            border: 1px solid #ffcccc;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #5CACEE;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1E90FF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Visit</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <form action="{% url 'add_visit' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="patient_id">Patient ID:</label>
+            <input type="text" id="patient_id" name="patient_id" required>
+        </div>
+        <div>
+            <label for="visit_id">Visit ID:</label>
+            <input type="text" id="visit_id" name="visit_id" required>
+        </div>
+        <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div>
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required>
+        </div>
+        <button type="submit">Add Visit</button>
+        <button type="button" onclick="redirectToVisits()">Back to Visits</button>
+    </form>
+</body>
+</html>

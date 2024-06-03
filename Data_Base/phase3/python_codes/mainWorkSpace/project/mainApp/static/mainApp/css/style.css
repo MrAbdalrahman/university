@@ -1,0 +1,311 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+header .logo {
+  font-size: 24px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.main-banner {
+  background-color: #ddd;
+  padding: 50px 0;
+  text-align: center;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.login-container {
+  /* Apply a very subtle white tint */
+  background-color: rgba(20, 220, 140, 0.963);
+  /* The backdrop-filter provides the blur */
+  backdrop-filter: blur(15px);
+  /* Ensure compatibility with Safari */
+  -webkit-backdrop-filter: blur(15px);
+  /* Rounded corners */
+  border-radius: 10px;
+  /* Padding inside the container */
+  padding: 40px;
+  /* A subtle border can help define the edges on certain backgrounds */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* Center the box */
+  margin: auto;
+  /* Additional styling */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* For the blur effect to be noticeable, there should be some content behind the container */
+  position: relative;
+  /* This ensures that the text inside the container is legible */
+  color: #333;
+  /* This ensures the container doesn't collapse if it has no content */
+  min-height: 200px;
+  /* Adjust width as necessary */
+  width: 300px;
+  /* Align text */
+  text-align: center;
+  /* Transition for smooth loading */
+  transition: background-color 0.3s ease;
+}
+
+.login-container h2 {
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden; /* Prevents pseudo-element from overflowing */
+  position: relative; /* Needed for pseudo-element positioning */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.password-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-group input[type="password"] {
+  flex-grow: 1;
+  padding-right: 1px; /* Make room for the eye icon inside the input */
+}
+
+.form-group .input-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  transition: opacity 0.2s ease; /* Transition effect for opacity change */
+  transition: opacity 0.2s ease, box-shadow 0.3s ease; /* Add box-shadow to the transition */
+  border-radius: 50%; /* Optional: to make the shadow appear rounded */
+  position: absolute;
+  bottom: 14px;
+  left: 327px;
+  cursor: pointer;
+  /* Adjust the dimensions as necessary */
+  width: 15px;
+  height: 15px;
+}
+
+.toggle-password2 {
+  transition: opacity 0.2s ease; /* Transition effect for opacity change */
+  transition: opacity 0.2s ease, box-shadow 0.3s ease; /* Add box-shadow to the transition */
+  border-radius: 50%; /* Optional: to make the shadow appear rounded */
+  position: absolute;
+  left: 327px;
+  bottom: 28px;
+  cursor: pointer;
+  /* Adjust the dimensions as necessary */
+  width: 15px;
+  height: 15px;
+}
+
+.fade {
+  opacity: 0; /* Make the image fully transparent */
+}
+
+.toggle-password:hover {
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.2); /* Soft shadow effect on hover */
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  /* existing styles... */
+  border: 1px solid #ccc; /* Default border */
+  border-radius: 4px; /* Rounded corners */
+  transition: border 0.3s ease; /* Smooth transition for the border */
+  /* Rest of your styles */
+}
+
+.form-group input[type="text"]:hover,
+.form-group input[type="password"]:hover {
+  border: 1px solid black; /* Border color on hover */
+}
+
+.forgot-password {
+  display: block; /* or 'inline-block' if you prefer */
+  margin-top: 8px; /* Space it a bit from the password field */
+  font-size: 0.9em; /* Smaller font size */
+  color: #007bff; /* Blue color for the link, you can choose any */
+  text-decoration: none; /* No underline */
+  transition: color 0.3s ease; /* Smooth color transition for hover effect */
+}
+
+.forgot-password:hover {
+  text-decoration: underline; /* Underline on hover for better visibility */
+  color: #051c5b6f; /* Darker shade when hovered */
+}
+
+.password-strength {
+  width: 0%;
+  height: 5px;
+  background-color: #dddddd;
+  margin-top: 5px;
+  border-radius: 3px;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+/* Apply overall font family and padding */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the container for the form */
+.login-container {
+  width: 350px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+/* Style the form headings */
+.login-container h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+/* Style the form groups (labels and inputs) */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Style the labels for inputs */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style the input fields */
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: calc(100% - 16px); /* Full width minus padding */
+  padding: 8px;
+  margin-bottom: 5px; /* Space below each input */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease-in-out; /* Smooth transition for border */
+}
+
+/* Hover effect for input fields */
+.form-group input[type="text"]:hover,
+.form-group input[type="password"]:hover {
+  border-color: #888; /* Darken border on hover */
+}
+
+/* Style the sign-up button */
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* Smooth transition for background */
+}
+
+/* Hover effect for the sign-up button */
+.signup-button:hover {
+  background-color: #0056b3; /* Darken button on hover */
+}
+
+/* Style for the password strength indicator */
+.password-strength {
+  width: 0%;
+  height: 5px;
+  background-color: #dddddd;
+  margin-top: 10px; /* Space above the strength bar */
+  border-radius: 3px;
+  transition: width 0.3s ease, background-color 0.3s ease; /* Smooth transitions for the bar */
+}
+
+/* Style for the forgot password and login links */
+.forgot-password,
+.login-container a {
+  display: block; /* Display as block for a new line */
+  margin-top: 10px; /* Margin above the link */
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out; /* Smooth transition for color */
+}
+
+/* Hover effect for links */
+.forgot-password:hover,
+.login-container a:hover {
+  text-decoration: underline; /* Underline on hover for better visibility */
+  color: #0056b3; /* Darken link color on hover */
+}
+
+.password-info {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.login-page,
+.signup-page {
+  background-image: url("bgnd.jpg"); /* Path to your image */
+  background-size: cover; /* Cover ensures the background image fully covers the page */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  height: 100%; /* This ensures the div takes up the full viewport height */
+  min-height: 100vh; /* Use viewport height to ensure it covers full screen on mobile devices */
+}

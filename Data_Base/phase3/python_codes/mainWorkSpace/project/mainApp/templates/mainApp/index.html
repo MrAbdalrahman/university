@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- The above declaration defines this document as HTML5 -->
+<html lang="en">
+  <!-- The <html> element with lang attribute specifying English as the primary language -->
+  <head>
+    <style>
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+    </style>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <!-- The <head> section contains meta-information about the document -->
+    <meta charset="UTF-8" />
+    <!-- Character encoding set to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Viewport set for responsive web design, scaling for different devices -->
+    <title>Online Clinic Management System</title>
+    <!-- Title of the document shown in the browser's title bar or tab -->
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+    <!-- External CSS file linked for styling -->
+  </head>
+  <body data-base-url="{% static 'mainApp/' %}">
+    <!-- The <body> tag contains the content of the document -->
+    <header>
+      <!-- Header section typically contains the website logo, navigation bar, etc. -->
+      <div class="logo">Online Clinic Management System</div>
+      <!-- Div for the logo -->
+      <nav>
+        <!-- Navigation bar -->
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="main-banner">
+      <!-- Placeholder for a main banner, typically for promotions or important site news -->
+      <!-- Banner Image Here -->
+    </div>
+
+    <div class="featured-products">
+      <!-- Placeholder for featured products, highlighting specific items or deals -->
+      <!-- Featured Products Here -->
+    </div>
+
+    <footer>
+      <!-- Footer section typically contains copyright notice, links to privacy policy, etc. -->
+      <p>&copy; 2024 Online Clinic Management System</p>
+      <!-- Copyright notice -->
+    </footer>
+  </body>
+</html>

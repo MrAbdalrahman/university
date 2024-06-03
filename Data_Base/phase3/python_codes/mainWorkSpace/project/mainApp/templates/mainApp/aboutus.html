@@ -1,0 +1,221 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Online Clinic Management System</title>
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+    <style>
+      body::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+      }
+
+      header .logo {
+        font-size: 24px;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      nav ul li {
+        display: inline;
+        margin: 0 10px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+      }
+
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+
+      .hero {
+        background: url("{% static 'mainApp/images/about-bg.jpg' %}") no-repeat
+          center center/cover;
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 80px; /* Adjust to accommodate fixed header */
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin: 0;
+      }
+
+      .hero p {
+        font-size: 20px;
+        margin: 10px 0 0;
+      }
+
+      .content {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        text-align: center;
+      }
+
+      .content h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      .content p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .team {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 20px;
+      }
+
+      .team-member {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+      }
+
+      .team-member img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .team-member h3 {
+        font-size: 22px;
+        margin: 10px 0 5px;
+        color: #2c3e50;
+      }
+
+      .team-member p {
+        font-size: 16px;
+        color: #777;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">Online Clinic Management System</div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="hero-content">
+        <h1>About Us</h1>
+        <p>
+          Learn more about our mission, vision, and the team behind our success.
+        </p>
+      </div>
+    </div>
+
+    <div class="content">
+      <h2>Our Mission</h2>
+      <p>
+        At Online Clinic Management System, our mission is to provide seamless
+        and efficient management solutions for clinics. We strive to enhance the
+        quality of healthcare by offering innovative and user-friendly software
+        that caters to the needs of both healthcare providers and patients.
+      </p>
+
+      <h2>Our Vision</h2>
+      <p>
+        Our vision is to become the leading provider of clinic management
+        solutions worldwide, helping clinics streamline their operations and
+        improve patient care. We are dedicated to continuous improvement and
+        innovation, ensuring our platform remains at the forefront of
+        technology.
+      </p>
+
+      <h2>Meet Our Team</h2>
+      <div class="team">
+        <div class="team-member">
+          <img
+            src="{% static 'mainApp/images/user1.jpg' %}"
+            alt="Team Member 1"
+          />
+          <h3>Abdel Rahman Shaheen</h3>
+          <p>Fullstack Developer</p>
+        </div>
+        <div class="team-member">
+          <img
+            src="{% static 'mainApp/images/user2.jpg' %}"
+            alt="Team Member 2"
+          />
+          <h3>Mahmoud Awad</h3>
+          <p>Fullstack Developer</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Online Clinic Management System. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

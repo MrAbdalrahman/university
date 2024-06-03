@@ -1,0 +1,582 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appointments</title>
+    <style>
+      html,
+      body {
+        overflow-x: hidden; /* Only prevent horizontal overflow */
+        height: 100%; /* Full height to ensure sticky can calculate positioning */
+      }
+
+      .modal-lg {
+        max-width: 90%; /* You can adjust this percentage as needed */
+      }
+      .modal-body table {
+        width: 100%; /* Ensure the table takes up full width */
+        overflow-x: auto; /* Add horizontal scroll if needed */
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        padding-top: 60px; /* Padding to avoid overlap with fixed header */
+      }
+
+      .button-container {
+        display: flex; /* Aligns child buttons in a row */
+        justify-content: flex-start; /* Aligns buttons to the start of the container */
+        gap: 10px; /* Adds space between buttons */
+        margin-bottom: 20px; /* Extra space below the button container */
+      }
+
+      .button {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        white-space: nowrap; /* Prevents buttons from wrapping text */
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 1000; /* Ensures it is above other content */
+        width: 100%; /* Full width */
+        background-color: #333; /* Ensures visibility over content */
+        color: white;
+        padding: 10px 20px;
+      }
+
+      .container {
+        padding-top: 70px; /* Increase padding-top to ensure content doesn't overlap under the header */
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+      .button-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows buttons to wrap onto the next line if not enough space */
+      }
+      .toggle-button {
+        cursor: pointer;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+
+      h1 {
+        color: #333;
+        display: inline-block; /* Align with toggle button */
+        margin-right: 10px; /* Space between header and button */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+
+      .container {
+        padding-top: 60px; /* Padding to avoid overlap with fixed header */
+      }
+      .toggle-button {
+        cursor: pointer;
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var submitButton = document.getElementById("submitQueryButton");
+        if (submitButton) {
+          submitButton.addEventListener("click", processNLQuery);
+        }
+      });
+
+      function processNLQuery() {
+        const query = document.getElementById("nlQueryInput").value;
+        const url = "{% url 'process_query' %}";
+        console.log("URL being called:", url); // Check if the URL is correct
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: query }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              console.log("Query result:", data.result);
+              const resultTableBody = document.getElementById(
+                "queryResultTableBody"
+              );
+              const resultBox = document.getElementById("queryResultBox");
+              resultTableBody.innerHTML = "";
+              resultBox.innerHTML = "";
+
+              if (data.result.length === 1) {
+                // Single result, display in a box
+                const singleResult = data.result[0];
+                for (const key in singleResult) {
+                  const div = document.createElement("div");
+                  div.innerHTML = `<strong>${key}:</strong> ${singleResult[key]}`;
+                  resultBox.appendChild(div);
+                }
+                $("#queryResultsModal").modal("show");
+                $("#queryResultsModal .modal-body").hide(); // Hide the table
+                $("#queryResultsModal .modal-body-single").show(); // Show the single result box
+              } else {
+                // Multiple results, display in a table
+                data.result.forEach((appointment) => {
+                  const row = document.createElement("tr");
+                  row.innerHTML = `
+                        <td>${appointment["Appointment_ID"]}</td>
+                        <td>${appointment["Patient_ID"]}</td>
+                        <td>${appointment["Date"]}</td>
+                        <td>${appointment["Time"]}</td>
+                        <td>${appointment["Purpose"]}</td>
+                    `;
+                  resultTableBody.appendChild(row);
+                });
+                $("#queryResultsModal").modal("show");
+                $("#queryResultsModal .modal-body").show(); // Show the table
+                $("#queryResultsModal .modal-body-single").hide(); // Hide the single result box
+              }
+            } else {
+              alert("Failed to process query: " + data.error);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function submitUpdate() {
+        var appointmentData = {
+          appointment_id: document.getElementById("modal-appointment-id").value,
+          patient_id: document.getElementById("modal-patient-id").value,
+          date: document.getElementById("modal-date").value,
+          time: document.getElementById("modal-time").value,
+          purpose: document.getElementById("modal-purpose").value,
+        };
+
+        fetch("{% url 'update_appointment' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(appointmentData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              $("#updateAppointmentModal").modal("hide");
+              window.location.reload();
+            } else {
+              alert("Failed to update appointment.");
+            }
+          });
+      }
+
+      function gotoadd() {
+        window.location.href = "{% url 'add_appointment' %}";
+      }
+
+      function goback() {
+        window.location.href = "{% url 'control' %}";
+      }
+      function toggleTable() {
+        var table = document.getElementById("appointmentTable");
+        var btn = document.getElementById("toggleButton");
+        if (table.style.display === "none") {
+          table.style.display = "";
+          btn.textContent = "Hide";
+        } else {
+          table.style.display = "none";
+          btn.textContent = "Show";
+        }
+      }
+
+      function selectRow(row) {
+        var checkbox = row.getElementsByTagName("input")[0];
+        checkbox.checked = !checkbox.checked;
+        row.style.backgroundColor = checkbox.checked ? "#f8d7da" : ""; // Change color on select
+      }
+
+      function deleteSelectedAppointments() {
+        var selected = document.querySelectorAll(
+          'input[name="selected_appointment"]:checked'
+        );
+        var appointmentIds = Array.from(selected).map((input) => input.value);
+
+        if (
+          appointmentIds.length > 0 &&
+          confirm("Are you sure you want to delete selected appointments?")
+        ) {
+          fetch("{% url 'delete_appointments' %}", {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ appointment_ids: appointmentIds }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.reload(); // Reload the page to reflect the changes
+              } else {
+                alert("Error deleting appointments");
+              }
+            });
+        }
+      }
+
+      function prepareUpdate() {
+        var selected = document.querySelector(
+          'input[name="selected_appointment"]:checked'
+        );
+        if (selected) {
+          fetch('{% url "get_appointment_details" %}', {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ appointment_id: selected.value }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                openUpdateModal(data.appointment);
+              } else {
+                alert("Failed to fetch appointment details.");
+              }
+            });
+        } else {
+          alert("Please select an appointment to update.");
+        }
+      }
+
+      function openUpdateModal(appointment) {
+        // Assuming you have modal fields with IDs matching these keys
+        document.getElementById("modal-appointment-id").value =
+          appointment.appointment_id;
+        document.getElementById("modal-patient-id").value =
+          appointment.patient_id;
+        document.getElementById("modal-date").value = appointment.date;
+        document.getElementById("modal-time").value = appointment.time;
+        document.getElementById("modal-purpose").value = appointment.purpose;
+
+        // Open the modal
+        $("#updateAppointmentModal").modal("show");
+      }
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div>Welcome, {{ username }}</div>
+      <button class="button" onclick="goback()">Return to Control Panel</button>
+      <button class="button" onclick="location.href='logout'">Log Out</button>
+
+      <div class="button-container">
+        <button
+          class="button toggle-button"
+          id="toggleButton"
+          onclick="toggleTable()"
+        >
+          Hide
+        </button>
+        <button class="button" onclick="gotoadd()">Add an Appointment</button>
+        <button class="button" onclick="prepareUpdate()">
+          Update Selected Appointment
+        </button>
+        <button class="button" onclick="deleteSelectedAppointments()">
+          Delete Selected Appointments
+        </button>
+        <button class="button" onclick="window.location.reload();">
+          Refresh
+        </button>
+        <button
+          class="button"
+          data-toggle="modal"
+          data-target="#smartFindModal"
+        >
+          Smart Find
+        </button>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Appointment Records</h1>
+
+      <table id="appointmentTable">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Appointment_ID</th>
+            <th>Patient_ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+          <tr
+            data-appointment-id="{{ appointment.appointment_id }}"
+            onclick="selectRow(this);"
+          >
+            <td>
+              <input
+                type="checkbox"
+                name="selected_appointment"
+                value="{{ appointment.appointment_id }}"
+              />
+            </td>
+            <td>{{ appointment.appointment_id }}</td>
+            <td>{{ appointment.patient_id }}</td>
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.time }}</td>
+            <td>{{ appointment.purpose }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Update Appointment Modal -->
+    <div
+      class="modal fade"
+      id="updateAppointmentModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updateAppointmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateAppointmentModalLabel">
+              Update Appointment
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="updateAppointmentForm">
+              <input type="hidden" id="modal-appointment-id" />
+              <div class="form-group">
+                <label>Patient ID:</label>
+                <input type="text" id="modal-patient-id" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="modal-date" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Time:</label>
+                <input type="text" id="modal-time" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Purpose:</label>
+                <input type="text" id="modal-purpose" class="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="submitUpdate()"
+            >
+              Save changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div
+      class="modal fade"
+      id="smartFindModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="smartFindModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="smartFindModalLabel">
+              Enter Your Query
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input
+              type="text"
+              class="form-control"
+              id="nlQueryInput"
+              placeholder="Type your target"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="submitQueryButton"
+            >
+              Submit Query
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure for Query Results -->
+    <div
+      class="modal fade"
+      id="queryResultsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="queryResultsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <!-- Add modal-lg class here -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="queryResultsModalLabel">
+              Query Results
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Appointment_ID</th>
+                  <th>Patient_ID</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody id="queryResultTableBody">
+                <!-- Results will be appended here -->
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-body-single" style="display: none">
+            <div
+              id="queryResultBox"
+              class="p-3"
+              style="background-color: #f9f9f9; border: 1px solid #ddd"
+            >
+              <!-- Single result will be displayed here -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

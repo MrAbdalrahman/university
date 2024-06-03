@@ -1,0 +1,278 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control Panel</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #1d1f20, #383a3b);
+        color: #fff;
+        font-family: "Roboto", sans-serif;
+      }
+      .header {
+        width: 100%;
+        background: #1a1c1d;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      .logout-button {
+        cursor: pointer;
+        background: #e74c3c;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px 20px;
+        transition: background 0.3s;
+        margin-right: 20px;
+      }
+      .logout-button:hover {
+        background: #c0392b;
+      }
+      .button-container {
+        position: relative;
+        height: 600px;
+        width: 600px;
+        margin-top: 150px;
+      }
+      .main-button {
+        width: 100px;
+        height: 100px;
+        background: #444;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .main-button img {
+        border-radius: 50%;
+        width: 80%;
+        height: 80%;
+      }
+      .main-button:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      .option-button {
+        width: 100px;
+        height: 100px;
+        background: #444;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        text-align: center;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        animation: showButton 0.5s forwards ease-in-out;
+      }
+      .option-button img {
+        border-radius: 50%;
+        width: 80%;
+        height: 80%;
+      }
+      .option-button.hide {
+        animation: hideButton 0.5s forwards ease-in-out;
+      }
+      .option-button:hover {
+        background: #555;
+      }
+      .tooltip {
+        position: absolute;
+        background: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s;
+        bottom: -30px; /* Adjust as necessary */
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .option-button:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      @keyframes showButton {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1) rotate(360deg);
+        }
+      }
+      @keyframes hideButton {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0) rotate(-360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <span>Welcome, Dr.{{ username }}</span>
+      <button class="logout-button" onclick="location.href='/logout';">
+        Log Out
+      </button>
+    </div>
+    <div class="button-container">
+      <div class="main-button" onclick="toggleOptions()">
+        <img src="{% static 'mainApp/images/show-more.png' %}" alt="Options" />
+        <div class="tooltip">Options</div>
+      </div>
+    </div>
+    <script>
+      function toggleOptions() {
+        const container = document.querySelector(".button-container");
+        const isShowing = container.classList.toggle("show-options");
+
+        if (isShowing) {
+          showButtons();
+        } else {
+          hideButtons();
+        }
+      }
+
+      function createButton(label, imageSrc, href, angle) {
+        const button = document.createElement("div");
+        button.className = "option-button";
+        button.onclick = () => (location.href = href);
+        button.dataset.angle = angle;
+
+        const img = document.createElement("img");
+        img.src = imageSrc;
+        button.appendChild(img);
+
+        const tooltip = document.createElement("div");
+        tooltip.className = "tooltip";
+        tooltip.innerText = label;
+        button.appendChild(tooltip);
+
+        return button;
+      }
+
+      function showButtons() {
+        const container = document.querySelector(".button-container");
+        const buttons = [
+          {
+            label: "Patients",
+            imageSrc: "{% static 'mainApp/images/patient.png' %}",
+            href: "patients.html",
+            angle: 0,
+          },
+          {
+            label: "Contact Numbers",
+            imageSrc: "{% static 'mainApp/images/contact.png' %}",
+            href: "contact_numbers.html",
+            angle: 51.42,
+          },
+          {
+            label: "Messages",
+            imageSrc: "{% static 'mainApp/images/chat.png' %}",
+            href: "messages.html",
+            angle: 102.84,
+          },
+          {
+            label: "Appointments",
+            imageSrc: "{% static 'mainApp/images/calendar.png' %}",
+            href: "appointments.html",
+            angle: 154.26,
+          },
+          {
+            label: "Services",
+            imageSrc: "{% static 'mainApp/images/medical-services.png' %}",
+            href: "services.html",
+            angle: 205.68,
+          },
+          {
+            label: "Treatment Records",
+            imageSrc: "{% static 'mainApp/images/dental-record.png' %}",
+            href: "treatment_records.html",
+            angle: 257.1,
+          },
+          {
+            label: "Visits",
+            imageSrc: "{% static 'mainApp/images/visitor.png' %}",
+            href: "visits.html",
+            angle: 308.52,
+          },
+        ];
+        const radius = 200;
+
+        buttons.forEach((buttonData) => {
+          const button = createButton(
+            buttonData.label,
+            buttonData.imageSrc,
+            buttonData.href,
+            buttonData.angle
+          );
+          const radian = (buttonData.angle * Math.PI) / 180;
+          const x = radius * Math.cos(radian);
+          const y = radius * Math.sin(radian);
+
+          button.style.top = `calc(50% + ${y}px)`;
+          button.style.left = `calc(50% + ${x}px)`;
+
+          container.appendChild(button);
+        });
+      }
+
+      function hideButtons() {
+        const buttons = document.querySelectorAll(".option-button");
+        buttons.forEach((button) => {
+          button.classList.add("hide");
+          setTimeout(() => {
+            button.remove();
+          }, 500); // Match this timeout to the duration of the hide animation
+        });
+      }
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  </body>
+</html>

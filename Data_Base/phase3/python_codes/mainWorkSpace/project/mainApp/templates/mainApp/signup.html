@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- Declaration for HTML5, tells the browser to render this document in HTML5 mode -->
+<html lang="en">
+  <!-- The root element of the HTML document, specifies the language as English -->
+  <head>
+    <style>
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <!-- Specifies the character encoding for the document (UTF-8) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Ensures the site is mobile-friendly by setting the viewport to match device width -->
+    <title>SignUp - Online Clinic Management System</title>
+    <!-- The title of the document, which appears in the browser tab -->
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+    <!-- Link to an external CSS file for styling the page -->
+
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+  </head>
+  <body class="signup-page" data-base-url="{% static 'mainApp/' %}">
+    <header>
+      <!-- The header section typically contains the site's logo and main navigation menu -->
+      <div class="logo">Online Clinic Management System</div>
+      <!-- Placeholder for the marketplace's logo -->
+      <nav>
+        <!-- Navigation section for site-wide links -->
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="login-container">
+      <!-- Container for the signup form, incorrectly classed as "login-container" -->
+      <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+
+        <!-- Form for user signup, data sent to server-side script via POST -->
+        <h2>Sign Up</h2>
+        <!-- Heading for the signup form -->
+        <div class="form-group">
+          <!-- Group for username input -->
+          <label for="new-username">Username:</label>
+          <!-- Label for the username field -->
+          <input type="text" id="new-username" name="username" required />
+          <!-- Text input for new username, required for form submission -->
+        </div>
+        <div class="form-group">
+          <!-- Group for password input -->
+          <div class="input-wrapper">
+            <label for="new-password">Password:</label>
+            <!-- Label for the password field -->
+            <input
+              type="password"
+              id="new-password"
+              name="password"
+              onkeyup="checkPasswordMatch(); checkPasswordStrength();"
+              required
+            />
+            <!-- Password input, invokes JavaScript functions for password validation and strength checking on keyup -->
+            <div id="password-strength" class="password-strength"></div>
+            <!-- Placeholder for password strength indicator -->
+            <img
+              src="{% static 'mainApp/images/eye.png' %}"
+              alt="Show Password"
+              id="toggle-password"
+              class="toggle-password2"
+              onclick="togglePassword();"
+            />
+          </div>
+          <!-- Toggle button to show/hide password -->
+        </div>
+        <div class="form-group">
+          <!-- Group for password confirmation input -->
+          <label for="confirm-password">Confirm Password:</label>
+          <!-- Label for the confirm password field -->
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            onkeyup="checkPasswordMatch(); checkPasswordStrength();"
+            required
+          />
+          <!-- Password confirmation input, also checks for match and strength -->
+          <button type="submit" class="signup-button">Sign Up</button>
+          <!-- Button to submit the form -->
+        </div>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+        <!-- Link for users who already have an account to navigate to the login page -->
+        <div id="password-match-info" class="password-info"></div>
+        <!-- Placeholder for password match information, duplicate ID needs correction -->
+      </form>
+    </div>
+    <script src="{% static 'mainApp/js/script.js' %}"></script>
+    <!-- External JavaScript file for form handling and validation -->
+  </body>
+</html>

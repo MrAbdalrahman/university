@@ -1,0 +1,98 @@
+{% load static %}
+
+<script>
+function redirectToServices() {
+    window.location.href = "{% url 'services' %}";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Service</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .messages {
+            padding: 10px;
+            background: #ffdddd;
+            border: 1px solid #ffcccc;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        textarea {
+            resize: vertical; /* Allow vertical resize only */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #5CACEE;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1E90FF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Service</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <form action="{% url 'add_service' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="service_id">Service ID:</label>
+            <input type="text" id="service_id" name="service_id" required>
+        </div>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        <button type="submit">Add Service</button>
+        <button type="button" onclick="redirectToServices()">Back to Services</button>
+    </form>
+</body>
+</html>
