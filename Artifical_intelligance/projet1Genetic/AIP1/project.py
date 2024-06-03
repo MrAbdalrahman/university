@@ -68,16 +68,20 @@ def generateInitialPopulation(jobs, numOfSolutions):
     for _ in range(numOfSolutions):
 
         solution = []
-        for job in jobs:
 
+        for job in jobs:
             solution.extend(job.operations)
 
         random.shuffle(solution)
+
         population.append(solution)
 
     return population
 
 def getFitness(solution, machines):
+
+
+# Child1: (M1[10], M1[8], M3[15], M4[12], M2[7])
 
     # clear machines schedules
     for machine in machines:
@@ -117,7 +121,7 @@ def getFitness(solution, machines):
                     break
         # If no operation could be scheduled, increment the time of the earliest available machine
         if not isScheduled:
-            nextAvailableTime = min(machinesAvailableTimes)
+            nextAvailableTime = min(machinesAvailableTimes) 
             for i in range(len(machinesAvailableTimes)):
                 if machinesAvailableTimes[i] == nextAvailableTime:
                     machinesAvailableTimes[i] += 1
@@ -127,7 +131,7 @@ def getFitness(solution, machines):
     makespan = max(machinesAvailableTimes)
     return makespan
 
-def selection(population, fitnesses):
+def selection(population, fitnesses): 
     sumFitness = sum(fitnesses)
     probabilities = [1 - (f / sumFitness) for f in fitnesses]  
     selected = random.choices(population, probabilities, k=2)
