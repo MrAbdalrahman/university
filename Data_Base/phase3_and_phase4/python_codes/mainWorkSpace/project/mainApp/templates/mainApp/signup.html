@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignUp - Online Clinic Management System</title>
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+  </head>
+  <body class="signup-page" data-base-url="{% static 'mainApp/' %}">
+    <header>
+      <div class="logo">Online Clinic Management System</div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="login-container">
+      <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+
+        <h2>Sign Up</h2>
+        <div class="form-group">
+          <label for="new-username">Username:</label>
+          <input type="text" id="new-username" name="username" required />
+        </div>
+        <div class="form-group">
+          <div class="input-wrapper">
+            <label for="new-password">Password:</label>
+            <input
+              type="password"
+              id="new-password"
+              name="password"
+              onkeyup="checkPasswordMatch(); checkPasswordStrength();"
+              required
+            />
+            <div id="password-strength" class="password-strength"></div>
+            <img
+              src="{% static 'mainApp/images/eye.png' %}"
+              alt="Show Password"
+              id="toggle-password"
+              class="toggle-password2"
+              onclick="togglePassword();"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password:</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            onkeyup="checkPasswordMatch(); checkPasswordStrength();"
+            required
+          />
+          <button type="submit" class="signup-button">Sign Up</button>
+        </div>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+        <div id="password-match-info" class="password-info"></div>
+      </form>
+    </div>
+    <script src="{% static 'mainApp/js/script.js' %}"></script>
+  </body>
+</html>

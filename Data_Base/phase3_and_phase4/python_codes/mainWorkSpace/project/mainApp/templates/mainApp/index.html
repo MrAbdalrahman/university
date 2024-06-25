@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      nav ul li a.btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      nav ul li a.btn:hover {
+        background-color: #5c5250;
+      }
+    </style>
+    <link
+      rel="icon"
+      href="{% static 'mainApp/images/logo.png' %}"
+      type="image/x-icon"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Clinic Management System</title>
+    <link rel="stylesheet" href="{% static 'mainApp/css/style.css' %}" />
+  </head>
+  <body data-base-url="{% static 'mainApp/' %}">
+    <header>
+      <div class="logo">Online Clinic Management System</div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="btn">Home</a></li>
+          <li><a href="about.html" class="btn">About Us</a></li>
+          <li><a href="contact.html" class="btn">Contact</a></li>
+          <li><a href="login.html" class="btn">Login</a></li>
+          <li><a href="signup.html" class="btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="main-banner">
+  
+    </div>
+
+    <div class="featured-products">
+     
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Online Clinic Management System</p>
+    </footer>
+  </body>
+</html>
